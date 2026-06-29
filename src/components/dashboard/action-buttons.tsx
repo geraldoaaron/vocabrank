@@ -5,7 +5,8 @@ import Link from 'next/link';
 import {
   Gamepad2,
   CalendarCheck,
-  Trophy,
+  Sparkles,
+  Award,
   History,
   User,
 } from 'lucide-react';
@@ -28,12 +29,20 @@ const actions = [
     shadow: 'shadow-amber-500/25',
   },
   {
-    href: '/leaderboard',
-    label: 'Leaderboard',
-    description: 'See global rankings',
-    icon: Trophy,
+    href: '/gacha',
+    label: 'Summon',
+    description: 'Get new vocabulary',
+    icon: Sparkles,
     gradient: 'from-emerald-500 to-teal-600',
     shadow: 'shadow-emerald-500/25',
+  },
+  {
+    href: '/achievements',
+    label: 'Badges',
+    description: 'View your badges',
+    icon: Award,
+    gradient: 'from-yellow-500 to-orange-500',
+    shadow: 'shadow-yellow-500/25',
   },
   {
     href: '/history',
@@ -74,7 +83,7 @@ export function ActionButtons() {
       animate="show"
     >
       <h2 className="text-lg font-semibold mb-3">Quick Actions</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
         {actions.map((action) => (
           <motion.div key={action.href} variants={item}>
             <Link

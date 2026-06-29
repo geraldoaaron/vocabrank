@@ -13,10 +13,11 @@ interface QuizResultsProps {
   session: QuizSession;
   totalXPEarned: number;
   totalRatingChange: number;
+  totalCoinsEarned: number;
   onPlayAgain: () => void;
 }
 
-export function QuizResults({ session, totalXPEarned, totalRatingChange, onPlayAgain }: QuizResultsProps) {
+export function QuizResults({ session, totalXPEarned, totalRatingChange, totalCoinsEarned, onPlayAgain }: QuizResultsProps) {
   const { score, totalQuestions, answers } = session;
   const accuracy = Math.round((score / totalQuestions) * 100);
   const isPerfect = score === totalQuestions;
@@ -112,6 +113,16 @@ export function QuizResults({ session, totalXPEarned, totalRatingChange, onPlayA
                 <p className="text-[10px] text-muted-foreground">Accuracy</p>
               </div>
             </div>
+
+            <Card className="p-4 bg-primary/5 border-primary/20 flex items-center gap-4">
+              <div className="h-12 w-12 rounded-full bg-yellow-500/20 text-yellow-500 flex items-center justify-center shrink-0">
+                <span className="text-xl">🪙</span>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground font-medium">Coins Earned</p>
+                <p className="text-2xl font-bold text-yellow-600 dark:text-yellow-500">+{totalCoinsEarned}</p>
+              </div>
+            </Card>
           </div>
         </Card>
       </motion.div>

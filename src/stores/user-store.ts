@@ -16,14 +16,21 @@ interface UserState {
 
   // Actions
   updateProfile: (updates: Partial<User>) => void;
-  addCorrectAnswer: (difficulty: Difficulty, entry: QuizHistoryEntry, timeSpent: number) => { xpEarned: number; ratingChange: number; newAchievements: string[] };
-  addWrongAnswer: (difficulty: Difficulty, entry: QuizHistoryEntry) => { ratingChange: number };
+  addCorrectAnswer: (difficulty: Difficulty, entry: QuizHistoryEntry, timeSpent: number) => { xpEarned: number; ratingChange: number; coinsEarned: number; newAchievements: string[] };
+  addWrongAnswer: (difficulty: Difficulty, entry: QuizHistoryEntry) => { ratingChange: number; coinsEarned: number };
   updateStreak: () => void;
   addActivity: (activity: Omit<ActivityEntry, 'id' | 'timestamp'>) => void;
   completeDailyChallenge: (date: string, score: number, totalQuestions: number) => void;
   getDailyChallenge: (date: string) => DailyChallenge | undefined;
   addPerfectQuiz: () => string[];
   toggleFavoriteWord: (wordId: string) => void;
+  addCoins: (amount: number) => void;
+  deductCoins: (amount: number) => boolean;
+  unlockVocab: (wordIds: string[]) => void;
+  setClaimedStarter: () => void;
+  setClaimedFree5x: () => void;
+  setClaimedMailboxReward: () => void;
+  setClaimedBonusReward: () => void;
   resetData: () => void;
 }
 
@@ -47,13 +54,25 @@ export const useUserStore = create<UserState>()(
         const speedMultiplier = getSpeedMultiplier(timeSpent);
         const baseXP = XP_REWARDS[difficulty];
         const xpEarned = Math.round(baseXP * streakMultiplier * speedMultiplier);
+        
+        // Rarity multiplier logic applied to rating
         const kFactor = ELO_K_FACTOR[difficulty];
-        const ratingChange = Math.round((kFactor * 0.5) * speedMultiplier);
+        let rarityMultiplier = 1;
+        if (difficulty === 'medium') rarityMultiplier = 1.5;
+        if (difficulty === 'hard') rarityMultiplier = 2.0;
+        if (difficulty === 'expert') rarityMultiplier = 3.0;
+
+        const ratingChange = Math.round((kFactor * 0.5 * rarityMultiplier) * speedMultiplier);
+        
+        // Coins reward
+        const coinsEarned = 10;
+
         const newXP = state.user.xp + xpEarned;
         const newLevel = getLevelFromXP(newXP);
         const newRating = state.user.rating + ratingChange;
         const newCorrect = state.user.correctAnswers + 1;
         const newTotal = state.user.totalQuestions + 1;
+        const newCoins = (state.user.coins || 0) + coinsEarned;
 
         const newAchievements = checkAchievements(
           newCorrect,
@@ -73,6 +92,7 @@ export const useUserStore = create<UserState>()(
             rating: newRating,
             correctAnswers: newCorrect,
             totalQuestions: newTotal,
+            coins: newCoins,
             achievements: [...s.user.achievements, ...newAchievements],
           },
           quizHistory: [
@@ -90,7 +110,7 @@ export const useUserStore = create<UserState>()(
           });
         }
 
-        return { xpEarned, ratingChange, newAchievements };
+        return { xpEarned, ratingChange, coinsEarned, newAchievements };
       },
 
       addWrongAnswer: (difficulty, entry) => {
@@ -110,7 +130,7 @@ export const useUserStore = create<UserState>()(
           ],
         }));
 
-        return { ratingChange };
+        return { ratingChange, coinsEarned: 0 };
       },
 
       updateStreak: () => {
@@ -218,6 +238,52 @@ export const useUserStore = create<UserState>()(
             user: { ...state.user, favoriteWords: newFavorites },
           };
         }),
+
+      addCoins: (amount) =>
+        set((state) => ({
+          user: { ...state.user, coins: (state.user.coins || 0) + amount },
+        })),
+
+      deductCoins: (amount) => {
+        const state = get();
+        const currentCoins = state.user.coins || 0;
+        if (currentCoins >= amount) {
+          set((s) => ({
+            user: { ...s.user, coins: currentCoins - amount },
+          }));
+          return true;
+        }
+        return false;
+      },
+
+      unlockVocab: (wordIds) =>
+        set((state) => {
+          const currentUnlocked = state.user.unlockedVocab || [];
+          const newUnlocked = new Set([...currentUnlocked, ...wordIds]);
+          return {
+            user: { ...state.user, unlockedVocab: Array.from(newUnlocked) },
+          };
+        }),
+
+      setClaimedStarter: () =>
+        set((state) => ({
+          user: { ...state.user, hasClaimedStarter: true },
+        })),
+
+      setClaimedFree5x: () =>
+        set((state) => ({
+          user: { ...state.user, hasClaimedFree5x: true },
+        })),
+
+      setClaimedMailboxReward: () => 
+        set((state) => ({
+          user: { ...state.user, hasClaimedMailboxReward: true },
+        })),
+
+      setClaimedBonusReward: () => 
+        set((state) => ({
+          user: { ...state.user, hasClaimedBonusReward: true },
+        })),
 
       resetData: () =>
         set({

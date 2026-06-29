@@ -1,0 +1,1252 @@
+[
+  {
+    "id": "dc-e1",
+    "word": "accompany",
+    "trans": "menemani"
+  },
+  {
+    "id": "dc-e2",
+    "word": "beautiful",
+    "trans": "indah"
+  },
+  {
+    "id": "dc-e3",
+    "word": "delicious",
+    "trans": "lezat"
+  },
+  {
+    "id": "dc-e4",
+    "word": "friendly",
+    "trans": "ramah"
+  },
+  {
+    "id": "dc-e5",
+    "word": "mistake",
+    "trans": "kesalahan"
+  },
+  {
+    "id": "dc-e6",
+    "word": "quiet",
+    "trans": "tenang"
+  },
+  {
+    "id": "dc-e7",
+    "word": "understand",
+    "trans": "memahami"
+  },
+  {
+    "id": "dc-e8",
+    "word": "weather",
+    "trans": "cuaca"
+  },
+  {
+    "id": "dc-e9",
+    "word": "morning",
+    "trans": "pagi"
+  },
+  {
+    "id": "dc-e10",
+    "word": "sleep",
+    "trans": "tidur"
+  },
+  {
+    "id": "dc-e11",
+    "word": "happy",
+    "trans": "senang"
+  },
+  {
+    "id": "dc-e12",
+    "word": "sad",
+    "trans": "sedih"
+  },
+  {
+    "id": "dc-e13",
+    "word": "tired",
+    "trans": "lelah"
+  },
+  {
+    "id": "dc-m1",
+    "word": "argue",
+    "trans": "berdebat"
+  },
+  {
+    "id": "dc-m2",
+    "word": "complain",
+    "trans": "mengeluh"
+  },
+  {
+    "id": "dc-m3",
+    "word": "apologize",
+    "trans": "meminta maaf"
+  },
+  {
+    "id": "dc-m4",
+    "word": "persuade",
+    "trans": "membujuk"
+  },
+  {
+    "id": "dc-m5",
+    "word": "convenient",
+    "trans": "nyaman/praktis"
+  },
+  {
+    "id": "dc-m6",
+    "word": "appreciate",
+    "trans": "menghargai"
+  },
+  {
+    "id": "dc-m7",
+    "word": "stubborn",
+    "trans": "keras kepala"
+  },
+  {
+    "id": "dc-m8",
+    "word": "gossip",
+    "trans": "bergosip"
+  },
+  {
+    "id": "dc-m9",
+    "word": "curious",
+    "trans": "penasaran"
+  },
+  {
+    "id": "dc-m10",
+    "word": "awkward",
+    "trans": "canggung"
+  },
+  {
+    "id": "dc-h1",
+    "word": "eavesdrop",
+    "trans": "menguping"
+  },
+  {
+    "id": "dc-h2",
+    "word": "procrastinate",
+    "trans": "menunda-nunda"
+  },
+  {
+    "id": "dc-h3",
+    "word": "hypocritical",
+    "trans": "munafik"
+  },
+  {
+    "id": "dc-h4",
+    "word": "exaggerate",
+    "trans": "membesar-besarkan"
+  },
+  {
+    "id": "dc-h5",
+    "word": "gullible",
+    "trans": "mudah ditipu"
+  },
+  {
+    "id": "dc-h6",
+    "word": "spontaneous",
+    "trans": "spontan"
+  },
+  {
+    "id": "dc-h7",
+    "word": "sympathetic",
+    "trans": "simpatik"
+  },
+  {
+    "id": "dc-h8",
+    "word": "fascinating",
+    "trans": "sangat menarik"
+  },
+  {
+    "id": "dc-h9",
+    "word": "overwhelmed",
+    "trans": "kewalahan"
+  },
+  {
+    "id": "dc-h10",
+    "word": "reluctant",
+    "trans": "enggan"
+  },
+  {
+    "id": "dc-x1",
+    "word": "idiosyncrasy",
+    "trans": "keunikan/kebiasaan aneh"
+  },
+  {
+    "id": "dc-x2",
+    "word": "ubiquitous",
+    "trans": "ada di mana-mana"
+  },
+  {
+    "id": "dc-x3",
+    "word": "ephemeral",
+    "trans": "fana/sementara"
+  },
+  {
+    "id": "dc-x4",
+    "word": "serendipity",
+    "trans": "kebetulan yang menguntungkan"
+  },
+  {
+    "id": "dc-x5",
+    "word": "mellifluous",
+    "trans": "merdu"
+  },
+  {
+    "id": "tf-m1",
+    "word": "abundant",
+    "trans": "berlimpah"
+  },
+  {
+    "id": "tf-m2",
+    "word": "acquire",
+    "trans": "memperoleh"
+  },
+  {
+    "id": "tf-m3",
+    "word": "adequate",
+    "trans": "memadai"
+  },
+  {
+    "id": "tf-m4",
+    "word": "anticipate",
+    "trans": "mengantisipasi"
+  },
+  {
+    "id": "tf-m5",
+    "word": "apparent",
+    "trans": "jelas"
+  },
+  {
+    "id": "tf-m6",
+    "word": "controversy",
+    "trans": "kontroversi"
+  },
+  {
+    "id": "tf-m7",
+    "word": "convey",
+    "trans": "menyampaikan"
+  },
+  {
+    "id": "tf-m8",
+    "word": "crucial",
+    "trans": "sangat penting"
+  },
+  {
+    "id": "tf-m9",
+    "word": "emphasize",
+    "trans": "menekankan"
+  },
+  {
+    "id": "tf-m10",
+    "word": "evaluate",
+    "trans": "mengevaluasi"
+  },
+  {
+    "id": "tf-h1",
+    "word": "compel",
+    "trans": "memaksa"
+  },
+  {
+    "id": "tf-h2",
+    "word": "comprise",
+    "trans": "terdiri dari"
+  },
+  {
+    "id": "tf-h3",
+    "word": "concurrent",
+    "trans": "bersamaan"
+  },
+  {
+    "id": "tf-h4",
+    "word": "contemplate",
+    "trans": "merenungkan"
+  },
+  {
+    "id": "tf-h5",
+    "word": "deteriorate",
+    "trans": "memburuk"
+  },
+  {
+    "id": "tf-h6",
+    "word": "diminish",
+    "trans": "berkurang"
+  },
+  {
+    "id": "tf-h7",
+    "word": "elaborate",
+    "trans": "menguraikan"
+  },
+  {
+    "id": "tf-h8",
+    "word": "endeavor",
+    "trans": "usaha/berusaha"
+  },
+  {
+    "id": "tf-h9",
+    "word": "profound",
+    "trans": "mendalam"
+  },
+  {
+    "id": "tf-h10",
+    "word": "fluctuate",
+    "trans": "berfluktuasi"
+  },
+  {
+    "id": "tf-x1",
+    "word": "empirical",
+    "trans": "empiris"
+  },
+  {
+    "id": "tf-x2",
+    "word": "perpetual",
+    "trans": "abadi"
+  },
+  {
+    "id": "tf-x3",
+    "word": "ambivalent",
+    "trans": "bimbang"
+  },
+  {
+    "id": "tf-x4",
+    "word": "anomalous",
+    "trans": "menyimpang"
+  },
+  {
+    "id": "tf-x5",
+    "word": "pragmatic",
+    "trans": "pragmatis"
+  },
+  {
+    "id": "ie-m1",
+    "word": "allocate",
+    "trans": "mengalokasikan"
+  },
+  {
+    "id": "ie-m2",
+    "word": "beneficial",
+    "trans": "bermanfaat"
+  },
+  {
+    "id": "ie-m3",
+    "word": "commence",
+    "trans": "memulai"
+  },
+  {
+    "id": "ie-m4",
+    "word": "compatible",
+    "trans": "kompatibel"
+  },
+  {
+    "id": "ie-m5",
+    "word": "compensate",
+    "trans": "mengkompensasi"
+  },
+  {
+    "id": "ie-m6",
+    "word": "demonstrate",
+    "trans": "mendemonstrasikan"
+  },
+  {
+    "id": "ie-m7",
+    "word": "exaggerate",
+    "trans": "membesar-besarkan"
+  },
+  {
+    "id": "ie-m8",
+    "word": "implement",
+    "trans": "menerapkan"
+  },
+  {
+    "id": "ie-m9",
+    "word": "justify",
+    "trans": "membenarkan"
+  },
+  {
+    "id": "ie-m10",
+    "word": "modify",
+    "trans": "memodifikasi"
+  },
+  {
+    "id": "ie-h1",
+    "word": "ambiguous",
+    "trans": "ambigu"
+  },
+  {
+    "id": "ie-h2",
+    "word": "coherent",
+    "trans": "koheren"
+  },
+  {
+    "id": "ie-h3",
+    "word": "comprehensive",
+    "trans": "komprehensif"
+  },
+  {
+    "id": "ie-h4",
+    "word": "consensus",
+    "trans": "konsensus"
+  },
+  {
+    "id": "ie-h5",
+    "word": "constraint",
+    "trans": "kendala"
+  },
+  {
+    "id": "ie-h6",
+    "word": "displace",
+    "trans": "menggantikan"
+  },
+  {
+    "id": "ie-h7",
+    "word": "forthcoming",
+    "trans": "yang akan datang"
+  },
+  {
+    "id": "ie-h8",
+    "word": "predominantly",
+    "trans": "terutama"
+  },
+  {
+    "id": "ie-h9",
+    "word": "vulnerability",
+    "trans": "kerentanan"
+  },
+  {
+    "id": "ie-h10",
+    "word": "sustainable",
+    "trans": "berkelanjutan"
+  },
+  {
+    "id": "ie-x1",
+    "word": "scrutinize",
+    "trans": "meneliti"
+  },
+  {
+    "id": "ie-x2",
+    "word": "substantiate",
+    "trans": "membuktikan"
+  },
+  {
+    "id": "ie-x3",
+    "word": "unprecedented",
+    "trans": "belum pernah terjadi sebelumnya"
+  },
+  {
+    "id": "ie-x4",
+    "word": "ubiquitous",
+    "trans": "berada di mana-mana"
+  },
+  {
+    "id": "ie-x5",
+    "word": "paradoxical",
+    "trans": "paradoks/bertentangan"
+  },
+  {
+    "id": "sat-m1",
+    "word": "candid",
+    "trans": "terus terang"
+  },
+  {
+    "id": "sat-m2",
+    "word": "diligent",
+    "trans": "rajin"
+  },
+  {
+    "id": "sat-m3",
+    "word": "nostalgia",
+    "trans": "nostalgia"
+  },
+  {
+    "id": "sat-m4",
+    "word": "superficial",
+    "trans": "dangkal"
+  },
+  {
+    "id": "sat-m5",
+    "word": "adept",
+    "trans": "mahir"
+  },
+  {
+    "id": "sat-m6",
+    "word": "clarify",
+    "trans": "mengklarifikasi"
+  },
+  {
+    "id": "sat-m7",
+    "word": "innovative",
+    "trans": "inovatif"
+  },
+  {
+    "id": "sat-m8",
+    "word": "lucid",
+    "trans": "jernih/jelas"
+  },
+  {
+    "id": "sat-m9",
+    "word": "modest",
+    "trans": "rendah hati"
+  },
+  {
+    "id": "sat-m10",
+    "word": "prolific",
+    "trans": "produktif"
+  },
+  {
+    "id": "sat-h1",
+    "word": "abridge",
+    "trans": "meringkas"
+  },
+  {
+    "id": "sat-h2",
+    "word": "benevolent",
+    "trans": "baik hati"
+  },
+  {
+    "id": "sat-h3",
+    "word": "eloquent",
+    "trans": "fasih"
+  },
+  {
+    "id": "sat-h4",
+    "word": "fervent",
+    "trans": "bersemangat"
+  },
+  {
+    "id": "sat-h5",
+    "word": "impartial",
+    "trans": "tidak memihak"
+  },
+  {
+    "id": "sat-h6",
+    "word": "lethargic",
+    "trans": "lesu"
+  },
+  {
+    "id": "sat-h7",
+    "word": "meticulous",
+    "trans": "teliti"
+  },
+  {
+    "id": "sat-h8",
+    "word": "obscure",
+    "trans": "tidak jelas"
+  },
+  {
+    "id": "sat-h9",
+    "word": "resilient",
+    "trans": "tangguh"
+  },
+  {
+    "id": "sat-h10",
+    "word": "venerate",
+    "trans": "menghormati"
+  },
+  {
+    "id": "sat-x1",
+    "word": "gregarious",
+    "trans": "suka bergaul"
+  },
+  {
+    "id": "sat-x2",
+    "word": "hackneyed",
+    "trans": "klise"
+  },
+  {
+    "id": "sat-x3",
+    "word": "juxtapose",
+    "trans": "menyandingkan"
+  },
+  {
+    "id": "sat-x4",
+    "word": "tenacious",
+    "trans": "gigih"
+  },
+  {
+    "id": "sat-x5",
+    "word": "ephemeral",
+    "trans": "sementara"
+  },
+  {
+    "id": "be-e1",
+    "word": "meeting",
+    "trans": "rapat"
+  },
+  {
+    "id": "be-e2",
+    "word": "client",
+    "trans": "klien"
+  },
+  {
+    "id": "be-e3",
+    "word": "office",
+    "trans": "kantor"
+  },
+  {
+    "id": "be-e4",
+    "word": "boss",
+    "trans": "bos"
+  },
+  {
+    "id": "be-e5",
+    "word": "salary",
+    "trans": "gaji"
+  },
+  {
+    "id": "be-e6",
+    "word": "job",
+    "trans": "pekerjaan"
+  },
+  {
+    "id": "be-e7",
+    "word": "company",
+    "trans": "perusahaan"
+  },
+  {
+    "id": "be-e8",
+    "word": "sell",
+    "trans": "menjual"
+  },
+  {
+    "id": "be-e9",
+    "word": "buy",
+    "trans": "membeli"
+  },
+  {
+    "id": "be-e10",
+    "word": "team",
+    "trans": "tim"
+  },
+  {
+    "id": "be-m1",
+    "word": "negotiate",
+    "trans": "bernegosiasi"
+  },
+  {
+    "id": "be-m2",
+    "word": "revenue",
+    "trans": "pendapatan"
+  },
+  {
+    "id": "be-m3",
+    "word": "stakeholder",
+    "trans": "pemangku kepentingan"
+  },
+  {
+    "id": "be-m4",
+    "word": "benchmark",
+    "trans": "tolok ukur"
+  },
+  {
+    "id": "be-m5",
+    "word": "collaborate",
+    "trans": "berkolaborasi"
+  },
+  {
+    "id": "be-m6",
+    "word": "delegate",
+    "trans": "mendelegasikan"
+  },
+  {
+    "id": "be-m7",
+    "word": "forecast",
+    "trans": "perkiraan"
+  },
+  {
+    "id": "be-m8",
+    "word": "implement",
+    "trans": "menerapkan"
+  },
+  {
+    "id": "be-m9",
+    "word": "incentive",
+    "trans": "insentif"
+  },
+  {
+    "id": "be-m10",
+    "word": "agenda",
+    "trans": "agenda"
+  },
+  {
+    "id": "be-h1",
+    "word": "leverage",
+    "trans": "memanfaatkan"
+  },
+  {
+    "id": "be-h2",
+    "word": "acquisition",
+    "trans": "akuisisi"
+  },
+  {
+    "id": "be-h3",
+    "word": "diversify",
+    "trans": "mendiversifikasi"
+  },
+  {
+    "id": "be-h4",
+    "word": "streamline",
+    "trans": "menyederhanakan"
+  },
+  {
+    "id": "be-h5",
+    "word": "scalable",
+    "trans": "terukur"
+  },
+  {
+    "id": "be-h6",
+    "word": "liability",
+    "trans": "kewajiban/tanggung jawab"
+  },
+  {
+    "id": "be-h7",
+    "word": "monopoly",
+    "trans": "monopoli"
+  },
+  {
+    "id": "be-h8",
+    "word": "liquidate",
+    "trans": "melikuidasi"
+  },
+  {
+    "id": "be-h9",
+    "word": "subsidiary",
+    "trans": "anak perusahaan"
+  },
+  {
+    "id": "be-h10",
+    "word": "synergy",
+    "trans": "sinergi"
+  },
+  {
+    "id": "be-x1",
+    "word": "amortization",
+    "trans": "amortisasi (penyusutan utang)"
+  },
+  {
+    "id": "be-x2",
+    "word": "fiduciary",
+    "trans": "kewajiban fidusia (kepercayaan)"
+  },
+  {
+    "id": "be-x3",
+    "word": "remuneration",
+    "trans": "remunerasi (imbalan)"
+  },
+  {
+    "id": "be-x4",
+    "word": "conglomerate",
+    "trans": "konglomerat"
+  },
+  {
+    "id": "aw-m1",
+    "word": "analyze",
+    "trans": "menganalisis"
+  },
+  {
+    "id": "aw-m2",
+    "word": "derive",
+    "trans": "memperoleh"
+  },
+  {
+    "id": "aw-m3",
+    "word": "facilitate",
+    "trans": "memfasilitasi"
+  },
+  {
+    "id": "aw-m4",
+    "word": "assess",
+    "trans": "menilai"
+  },
+  {
+    "id": "aw-m5",
+    "word": "concept",
+    "trans": "konsep"
+  },
+  {
+    "id": "aw-m6",
+    "word": "context",
+    "trans": "konteks"
+  },
+  {
+    "id": "aw-m7",
+    "word": "define",
+    "trans": "mendefinisikan"
+  },
+  {
+    "id": "aw-m8",
+    "word": "establish",
+    "trans": "mendirikan/menetapkan"
+  },
+  {
+    "id": "aw-m9",
+    "word": "factor",
+    "trans": "faktor"
+  },
+  {
+    "id": "aw-m10",
+    "word": "indicate",
+    "trans": "menunjukkan"
+  },
+  {
+    "id": "aw-h1",
+    "word": "hypothesis",
+    "trans": "hipotesis"
+  },
+  {
+    "id": "aw-h2",
+    "word": "phenomenon",
+    "trans": "fenomena"
+  },
+  {
+    "id": "aw-h3",
+    "word": "synthesize",
+    "trans": "menyintesis"
+  },
+  {
+    "id": "aw-h4",
+    "word": "methodology",
+    "trans": "metodologi"
+  },
+  {
+    "id": "aw-h5",
+    "word": "correlate",
+    "trans": "berkorelasi"
+  },
+  {
+    "id": "aw-h6",
+    "word": "implication",
+    "trans": "implikasi"
+  },
+  {
+    "id": "aw-h7",
+    "word": "inherent",
+    "trans": "melekat"
+  },
+  {
+    "id": "aw-h8",
+    "word": "constitute",
+    "trans": "merupakan"
+  },
+  {
+    "id": "aw-h9",
+    "word": "subsequent",
+    "trans": "selanjutnya"
+  },
+  {
+    "id": "aw-h10",
+    "word": "empirical",
+    "trans": "empiris"
+  },
+  {
+    "id": "aw-x1",
+    "word": "paradigm",
+    "trans": "paradigma"
+  },
+  {
+    "id": "aw-x2",
+    "word": "epistemology",
+    "trans": "epistemologi"
+  },
+  {
+    "id": "aw-x3",
+    "word": "ontology",
+    "trans": "ontologi"
+  },
+  {
+    "id": "aw-x4",
+    "word": "heuristic",
+    "trans": "heuristik"
+  },
+  {
+    "id": "pv-e1",
+    "word": "figure out",
+    "trans": "mencari tahu"
+  },
+  {
+    "id": "pv-e2",
+    "word": "give up",
+    "trans": "menyerah"
+  },
+  {
+    "id": "pv-e3",
+    "word": "set up",
+    "trans": "mendirikan / memasang"
+  },
+  {
+    "id": "pv-e4",
+    "word": "work out",
+    "trans": "berolahraga / menyelesaikan"
+  },
+  {
+    "id": "pv-e5",
+    "word": "wake up",
+    "trans": "bangun tidur"
+  },
+  {
+    "id": "pv-e6",
+    "word": "sit down",
+    "trans": "duduk"
+  },
+  {
+    "id": "pv-e7",
+    "word": "stand up",
+    "trans": "berdiri"
+  },
+  {
+    "id": "pv-e8",
+    "word": "turn on",
+    "trans": "menyalakan"
+  },
+  {
+    "id": "pv-e9",
+    "word": "turn off",
+    "trans": "mematikan"
+  },
+  {
+    "id": "pv-e10",
+    "word": "look for",
+    "trans": "mencari"
+  },
+  {
+    "id": "pv-m1",
+    "word": "break down",
+    "trans": "rusak / mogok"
+  },
+  {
+    "id": "pv-m2",
+    "word": "bring up",
+    "trans": "membesarkan / mengangkat topik"
+  },
+  {
+    "id": "pv-m3",
+    "word": "call off",
+    "trans": "membatalkan"
+  },
+  {
+    "id": "pv-m4",
+    "word": "come across",
+    "trans": "menemukan secara kebetulan"
+  },
+  {
+    "id": "pv-m5",
+    "word": "look forward to",
+    "trans": "menantikan"
+  },
+  {
+    "id": "pv-m6",
+    "word": "make up",
+    "trans": "mengarang / berdamai"
+  },
+  {
+    "id": "pv-m7",
+    "word": "put off",
+    "trans": "menunda"
+  },
+  {
+    "id": "pv-m8",
+    "word": "run out of",
+    "trans": "kehabisan"
+  },
+  {
+    "id": "pv-m9",
+    "word": "take over",
+    "trans": "mengambil alih"
+  },
+  {
+    "id": "pv-m10",
+    "word": "turn down",
+    "trans": "menolak"
+  },
+  {
+    "id": "pv-h1",
+    "word": "get away with",
+    "trans": "lolos dari hukuman"
+  },
+  {
+    "id": "pv-h2",
+    "word": "put up with",
+    "trans": "mentoleransi"
+  },
+  {
+    "id": "pv-h3",
+    "word": "look down on",
+    "trans": "meremehkan"
+  },
+  {
+    "id": "pv-h4",
+    "word": "catch up on",
+    "trans": "menyusul ketertinggalan"
+  },
+  {
+    "id": "pv-h5",
+    "word": "fall out with",
+    "trans": "bertengkar dengan"
+  },
+  {
+    "id": "pv-h6",
+    "word": "back down",
+    "trans": "mengalah"
+  },
+  {
+    "id": "pv-h7",
+    "word": "boil down to",
+    "trans": "pada intinya"
+  },
+  {
+    "id": "pv-h8",
+    "word": "brush up on",
+    "trans": "menyegarkan ingatan/keahlian"
+  },
+  {
+    "id": "pv-h9",
+    "word": "chalk up to",
+    "trans": "menganggap sebagai akibat dari"
+  },
+  {
+    "id": "pv-h10",
+    "word": "iron out",
+    "trans": "menyelesaikan masalah"
+  },
+  {
+    "id": "id-m1",
+    "word": "piece of cake",
+    "trans": "sangat mudah"
+  },
+  {
+    "id": "id-m2",
+    "word": "break the ice",
+    "trans": "mencairkan suasana"
+  },
+  {
+    "id": "id-m3",
+    "word": "under the weather",
+    "trans": "kurang sehat"
+  },
+  {
+    "id": "id-m4",
+    "word": "once in a blue moon",
+    "trans": "sangat jarang"
+  },
+  {
+    "id": "id-m5",
+    "word": "spill the beans",
+    "trans": "membocorkan rahasia"
+  },
+  {
+    "id": "id-m6",
+    "word": "beat around the bush",
+    "trans": "berbelit-belit"
+  },
+  {
+    "id": "id-m7",
+    "word": "call it a day",
+    "trans": "menyudahi pekerjaan"
+  },
+  {
+    "id": "id-m8",
+    "word": "hang in there",
+    "trans": "tetap bertahan"
+  },
+  {
+    "id": "id-m9",
+    "word": "hit the sack",
+    "trans": "pergi tidur"
+  },
+  {
+    "id": "id-m10",
+    "word": "on the ball",
+    "trans": "sangat tanggap/fokus"
+  },
+  {
+    "id": "id-h1",
+    "word": "hit the nail on the head",
+    "trans": "tepat sasaran"
+  },
+  {
+    "id": "id-h2",
+    "word": "cost an arm and a leg",
+    "trans": "sangat mahal"
+  },
+  {
+    "id": "id-h3",
+    "word": "bite the bullet",
+    "trans": "menerima hal sulit"
+  },
+  {
+    "id": "id-h4",
+    "word": "burn the midnight oil",
+    "trans": "begadang untuk bekerja"
+  },
+  {
+    "id": "id-h5",
+    "word": "let the cat out of the bag",
+    "trans": "membocorkan rahasia"
+  },
+  {
+    "id": "id-h6",
+    "word": "the ball is in your court",
+    "trans": "giliranmu untuk bertindak"
+  },
+  {
+    "id": "id-h7",
+    "word": "by the skin of your teeth",
+    "trans": "nyaris / hampir saja"
+  },
+  {
+    "id": "id-h8",
+    "word": "cut corners",
+    "trans": "mengambil jalan pintas (kualitas turun)"
+  },
+  {
+    "id": "id-h9",
+    "word": "elephant in the room",
+    "trans": "masalah besar yang dihindari"
+  },
+  {
+    "id": "id-h10",
+    "word": "jump on the bandwagon",
+    "trans": "ikut-ikutan tren"
+  },
+  {
+    "id": "usr-1",
+    "word": "ached",
+    "trans": "sakit / ngilu / sangat sedih"
+  },
+  {
+    "id": "usr-2",
+    "word": "it is my custom",
+    "trans": "itu adalah kebiasaanku"
+  },
+  {
+    "id": "usr-3",
+    "word": "gobble down",
+    "trans": "melahap dengan cepat"
+  },
+  {
+    "id": "usr-4",
+    "word": "gobbled",
+    "trans": "makan dengan rakus"
+  },
+  {
+    "id": "usr-5",
+    "word": "nimble",
+    "trans": "lincah / gesit"
+  },
+  {
+    "id": "usr-6",
+    "word": "thieves",
+    "trans": "para pencuri"
+  },
+  {
+    "id": "usr-7",
+    "word": "riverbank",
+    "trans": "tepi sungai"
+  },
+  {
+    "id": "usr-8",
+    "word": "fast current",
+    "trans": "arus deras"
+  },
+  {
+    "id": "usr-9",
+    "word": "beneath",
+    "trans": "di bawah"
+  },
+  {
+    "id": "usr-10",
+    "word": "once more beneath",
+    "trans": "sekali lagi di bawah"
+  },
+  {
+    "id": "usr-11",
+    "word": "wet fur",
+    "trans": "bulu basah"
+  },
+  {
+    "id": "usr-12",
+    "word": "lasts",
+    "trans": "bertahan / awet"
+  },
+  {
+    "id": "usr-13",
+    "word": "custard",
+    "trans": "krim manis / saus vla"
+  },
+  {
+    "id": "usr-14",
+    "word": "shook",
+    "trans": "menggoyang / sangat terkejut"
+  },
+  {
+    "id": "usr-15",
+    "word": "chanted",
+    "trans": "melantunkan / meneriakkan"
+  },
+  {
+    "id": "usr-16",
+    "word": "lifted up his jumper",
+    "trans": "mengangkat sweternya"
+  },
+  {
+    "id": "usr-17",
+    "word": "triumphantly",
+    "trans": "dengan penuh kemenangan"
+  },
+  {
+    "id": "usr-18",
+    "word": "grownups",
+    "trans": "orang dewasa"
+  },
+  {
+    "id": "usr-19",
+    "word": "carousel",
+    "trans": "komidi putar / ban berjalan"
+  },
+  {
+    "id": "usr-20",
+    "word": "sat on the bench by the carousel",
+    "trans": "duduk dekat ban berjalan bagasi"
+  },
+  {
+    "id": "usr-21",
+    "word": "luggage",
+    "trans": "barang bawaan / koper"
+  },
+  {
+    "id": "usr-22",
+    "word": "turban",
+    "trans": "sorban / ikat kepala"
+  },
+  {
+    "id": "usr-23",
+    "word": "inquisitive",
+    "trans": "selalu ingin tahu / kepo"
+  },
+  {
+    "id": "usr-24",
+    "word": "moving in neat lines",
+    "trans": "melaju dalam barisan yang rapi"
+  },
+  {
+    "id": "usr-25",
+    "word": "sulked",
+    "trans": "merajuk / ngambek"
+  },
+  {
+    "id": "usr-26",
+    "word": "sulked off",
+    "trans": "pergi sambil merajuk"
+  },
+  {
+    "id": "usr-27",
+    "word": "piled one",
+    "trans": "menumpuk satu"
+  },
+  {
+    "id": "usr-28",
+    "word": "saddened",
+    "trans": "dibuat sedih"
+  },
+  {
+    "id": "usr-29",
+    "word": "whilst",
+    "trans": "sementara / padahal"
+  }
+]

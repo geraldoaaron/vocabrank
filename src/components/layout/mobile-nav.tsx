@@ -6,15 +6,17 @@ import { cn } from '@/lib/utils';
 import {
   LayoutDashboard,
   Gamepad2,
-  Trophy,
   User,
+  Sparkles,
+  BookOpen,
   Award,
 } from 'lucide-react';
 
 const mobileNavItems = [
   { href: '/dashboard', label: 'Home', icon: LayoutDashboard },
   { href: '/quiz', label: 'Quiz', icon: Gamepad2 },
-  { href: '/leaderboard', label: 'Rank', icon: Trophy },
+  { href: '/gacha', label: 'Summon', icon: Sparkles },
+  { href: '/gallery', label: 'Gallery', icon: BookOpen },
   { href: '/achievements', label: 'Badges', icon: Award },
   { href: '/profile', label: 'Profile', icon: User },
 ];
@@ -24,7 +26,7 @@ export function MobileNav() {
 
   return (
     <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-card/90 backdrop-blur-xl border-t border-border safe-area-bottom">
-      <div className="flex items-center justify-around px-2 py-1">
+      <div className="flex items-center justify-between md:justify-around px-2 py-1 overflow-x-auto [&::-webkit-scrollbar]:hidden">
         {mobileNavItems.map((item) => {
           const isActive = pathname === item.href;
           return (

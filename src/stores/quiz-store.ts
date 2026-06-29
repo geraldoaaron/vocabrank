@@ -3,6 +3,7 @@
 import { create } from 'zustand';
 import type { QuizQuestion, QuizSession, QuizAnswer, Difficulty, Category } from '@/types';
 import { VOCABULARY, generateQuizOptions, shuffleArray, getFilteredQuestions } from '@/data/vocabulary';
+import { useUserStore } from '@/stores/user-store';
 
 interface QuizState {
   session: QuizSession | null;
@@ -27,10 +28,17 @@ export const useQuizStore = create<QuizState>()((set, get) => ({
   timeRemaining: 10,
 
   startQuiz: (mode, difficulty, category, questionCount) => {
-    const filteredQuestions = getFilteredQuestions(
+    const userState = useUserStore.getState();
+    const unlockedVocab = userState.user.unlockedVocab || [];
+    
+    // Fallback if they haven't claimed starter (though they shouldn't be able to start)
+    const baseQuestions = getFilteredQuestions(
       difficulty as string,
       category as string
     );
+
+    // Only allow questions that the user has unlocked
+    const filteredQuestions = baseQuestions.filter(q => unlockedVocab.includes(q.id));
 
     if (filteredQuestions.length === 0) return false;
 

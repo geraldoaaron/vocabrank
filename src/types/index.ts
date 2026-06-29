@@ -31,6 +31,8 @@ export interface Question {
   exampleSentence: string;
   synonyms: string[];
   partOfSpeech: PartOfSpeech;
+  explanation?: string;
+  explanationIndo?: string;
 }
 
 export interface QuizOption {
@@ -103,6 +105,12 @@ export interface User {
   createdAt: string;
   achievements: string[];
   favoriteWords: string[];
+  coins: number;
+  unlockedVocab: string[];
+  hasClaimedStarter: boolean;
+  hasClaimedFree5x: boolean;
+  hasClaimedMailboxReward: boolean;
+  hasClaimedBonusReward: boolean;
 }
 
 export interface Achievement {

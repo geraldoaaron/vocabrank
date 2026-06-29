@@ -13,6 +13,8 @@ import {
   User,
   Settings,
   Zap,
+  Sparkles,
+  BookOpen,
 } from 'lucide-react';
 import { ThemeToggle } from './theme-toggle';
 import { useUserStore } from '@/stores/user-store';
@@ -21,6 +23,8 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/gacha', label: 'Summon', icon: Sparkles },
+  { href: '/gallery', label: 'Gallery', icon: BookOpen },
   { href: '/quiz', label: 'Play Quiz', icon: Gamepad2 },
   { href: '/daily-challenge', label: 'Daily Challenge', icon: CalendarCheck },
   { href: '/leaderboard', label: 'Leaderboard', icon: Trophy },

@@ -23,6 +23,7 @@ export default function QuizPage() {
   const [lastXPEarned, setLastXPEarned] = useState(0);
   const [totalXPEarned, setTotalXPEarned] = useState(0);
   const [totalRatingChange, setTotalRatingChange] = useState(0);
+  const [totalCoinsEarned, setTotalCoinsEarned] = useState(0);
 
   const {
     session,
@@ -63,6 +64,7 @@ export default function QuizPage() {
     setPhase('playing');
     setTotalXPEarned(0);
     setTotalRatingChange(0);
+    setTotalCoinsEarned(0);
     resetTimer();
   };
 
@@ -102,6 +104,7 @@ export default function QuizPage() {
       setLastXPEarned(result.xpEarned);
       setTotalXPEarned((prev) => prev + result.xpEarned);
       setTotalRatingChange((prev) => prev + result.ratingChange);
+      setTotalCoinsEarned((prev) => prev + result.coinsEarned);
     } else {
       playSound('incorrect');
       const result = addWrongAnswer(difficulty, historyEntry);
@@ -133,7 +136,7 @@ export default function QuizPage() {
           addActivity({
             type: 'quiz_complete',
             title: `Quiz Completed: ${score}/${total}`,
-            description: `${isPerfect ? '🎯 Perfect score! ' : ''}Earned ${totalXPEarned + (isCorrect ? lastXPEarned : 0)} XP`,
+            description: `${isPerfect ? '🎯 Perfect score! ' : ''}Earned ${totalXPEarned + (isCorrect ? lastXPEarned : 0)} XP & ${totalCoinsEarned + (isCorrect ? 10 : 0)} Coins`,
             xpEarned: totalXPEarned + (isCorrect ? lastXPEarned : 0),
             ratingChange: totalRatingChange + lastRatingChange,
           });
@@ -150,6 +153,7 @@ export default function QuizPage() {
     setLastXPEarned(0);
     setTotalXPEarned(0);
     setTotalRatingChange(0);
+    setTotalCoinsEarned(0);
   };
 
   return (
@@ -203,6 +207,7 @@ export default function QuizPage() {
               session={session}
               totalXPEarned={totalXPEarned}
               totalRatingChange={totalRatingChange}
+              totalCoinsEarned={totalCoinsEarned}
               onPlayAgain={handlePlayAgain}
             />
           </motion.div>

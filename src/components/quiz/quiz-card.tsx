@@ -50,9 +50,17 @@ export function QuizCard({ question, isAnswered, selectedOptionId, onAnswer }: Q
             </h2>
             <button
               onClick={() => {
-                if ('speechSynthesis' in window) {
+                if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+                  window.speechSynthesis.cancel();
                   const utterance = new SpeechSynthesisUtterance(question.question.englishWord);
                   utterance.lang = 'en-US';
+                  
+                  const voices = window.speechSynthesis.getVoices();
+                  const englishVoice = voices.find(v => v.lang.startsWith('en') || v.name.includes('English'));
+                  if (englishVoice) {
+                    utterance.voice = englishVoice;
+                  }
+                  
                   window.speechSynthesis.speak(utterance);
                 }
               }}
@@ -83,11 +91,14 @@ export function QuizCard({ question, isAnswered, selectedOptionId, onAnswer }: Q
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.05 * idx }}
+              whileHover={!isAnswered ? { y: -2 } : {}}
+              whileTap={!isAnswered ? { scale: 0.98 } : {}}
               onClick={() => !isAnswered && onAnswer(option.id)}
               disabled={isAnswered}
+              style={{ WebkitTransform: 'translateZ(0)' }} // Hardware acceleration for iOS
               className={cn(
-                'p-4 rounded-2xl border-2 text-left font-medium transition-all duration-200 flex items-center gap-3 group',
-                !isAnswered && 'hover:border-primary/50 hover:bg-primary/5 hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer',
+                'p-4 rounded-2xl border-2 text-left font-medium transition-colors duration-200 flex items-center gap-3 group',
+                !isAnswered && 'hover:border-primary/50 hover:bg-primary/5 hover:shadow-md cursor-pointer',
                 isAnswered && !showCorrect && !showWrong && 'opacity-50',
                 showCorrect && 'border-emerald-500 bg-emerald-500/10 shadow-lg shadow-emerald-500/20',
                 showWrong && 'border-red-500 bg-red-500/10 animate-shake',

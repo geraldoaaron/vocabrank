@@ -105,11 +105,19 @@ export const DEFAULT_USER = {
   createdAt: new Date().toISOString(),
   achievements: [] as string[],
   favoriteWords: [] as string[],
+  coins: 0,
+  unlockedVocab: [] as string[],
+  hasClaimedStarter: false,
+  hasClaimedFree5x: false,
+  hasClaimedMailboxReward: false,
+  hasClaimedBonusReward: false,
 };
 
 // Nav items
 export const NAV_ITEMS = [
   { href: '/dashboard', label: 'Dashboard', icon: 'LayoutDashboard' },
+  { href: '/gacha', label: 'Summon', icon: 'Sparkles' },
+  { href: '/gallery', label: 'Gallery', icon: 'BookOpen' },
   { href: '/quiz', label: 'Play Quiz', icon: 'Gamepad2' },
   { href: '/daily-challenge', label: 'Daily Challenge', icon: 'CalendarCheck' },
   { href: '/leaderboard', label: 'Leaderboard', icon: 'Trophy' },

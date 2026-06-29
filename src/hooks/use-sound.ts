@@ -3,6 +3,8 @@
 import { useCallback } from 'react';
 import { useAppStore } from '@/stores/app-store';
 
+let audioContext: AudioContext | null = null;
+
 export function useSound() {
   const soundEnabled = useAppStore((s) => s.soundEnabled);
 
@@ -11,7 +13,19 @@ export function useSound() {
       if (!soundEnabled) return;
 
       try {
-        const audioContext = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+        if (!audioContext) {
+          const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+          if (AudioContextClass) {
+            audioContext = new AudioContextClass();
+          }
+        }
+
+        if (!audioContext) return;
+
+        // Mobile browsers often suspend AudioContext until user interaction
+        if (audioContext.state === 'suspended') {
+          audioContext.resume();
+        }
         const oscillator = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
 

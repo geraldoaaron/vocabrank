@@ -26,6 +26,7 @@ export default function DailyChallengeQuiz() {
   const [lastXPEarned, setLastXPEarned] = useState(0);
   const [totalXPEarned, setTotalXPEarned] = useState(0);
   const [totalRatingChange, setTotalRatingChange] = useState(0);
+  const [totalCoinsEarned, setTotalCoinsEarned] = useState(0);
   const [hoursRemaining, setHoursRemaining] = useState(0);
   const [minutesRemaining, setMinutesRemaining] = useState(0);
 
@@ -77,6 +78,7 @@ export default function DailyChallengeQuiz() {
     setPhase('playing');
     setTotalXPEarned(0);
     setTotalRatingChange(0);
+    setTotalCoinsEarned(0);
     resetTimer();
   };
 
@@ -118,6 +120,7 @@ export default function DailyChallengeQuiz() {
       setLastXPEarned(result.xpEarned);
       setTotalXPEarned(prev => prev + result.xpEarned);
       setTotalRatingChange(prev => prev + result.ratingChange);
+      setTotalCoinsEarned(prev => prev + result.coinsEarned);
     } else {
       playSound('incorrect');
       const result = addWrongAnswer(difficulty, historyEntry);
@@ -142,7 +145,14 @@ export default function DailyChallengeQuiz() {
           // Apply daily bonus
           const finalXP = totalXPEarned + (isCorrect ? lastXPEarned : 0) + DAILY_CHALLENGE_BONUS_XP;
           const finalRating = totalRatingChange + lastRatingChange + DAILY_CHALLENGE_BONUS_RATING;
-          updateProfile({ xp: user.xp + DAILY_CHALLENGE_BONUS_XP, rating: user.rating + DAILY_CHALLENGE_BONUS_RATING });
+          // Also give bonus coins for daily challenge!
+          const bonusCoins = 50;
+          updateProfile({ 
+            xp: user.xp + DAILY_CHALLENGE_BONUS_XP, 
+            rating: user.rating + DAILY_CHALLENGE_BONUS_RATING,
+            coins: (user.coins || 0) + bonusCoins
+          });
+          setTotalCoinsEarned(prev => prev + bonusCoins);
 
           completeDailyChallenge(today, score, total);
 
@@ -277,9 +287,10 @@ export default function DailyChallengeQuiz() {
           >
             <QuizResults
               session={session}
-              totalXPEarned={totalXPEarned}
-              totalRatingChange={totalRatingChange}
-              onPlayAgain={handlePlayAgain}
+              totalXPEarned={totalXPEarned + DAILY_CHALLENGE_BONUS_XP}
+              totalRatingChange={totalRatingChange + DAILY_CHALLENGE_BONUS_RATING}
+              totalCoinsEarned={totalCoinsEarned}
+              onPlayAgain={() => setPhase('info')}
             />
           </motion.div>
         )}

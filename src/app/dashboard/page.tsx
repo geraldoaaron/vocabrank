@@ -9,8 +9,11 @@ import { StreakDisplay } from '@/components/dashboard/streak-display';
 import { RecentActivity } from '@/components/dashboard/recent-activity';
 import { useUserStore } from '@/stores/user-store';
 import { useEffect } from 'react';
+import { Coins } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 export default function DashboardPage() {
+  const user = useUserStore((s) => s.user);
   const updateStreak = useUserStore((s) => s.updateStreak);
 
   useEffect(() => {
@@ -33,7 +36,13 @@ export default function DashboardPage() {
             Ready to expand your vocabulary today?
           </p>
         </div>
-        <StreakDisplay />
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+          <Badge className="text-sm px-3 py-1.5 gap-1.5 rounded-xl bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 border-yellow-500/20 hover:bg-yellow-500/15">
+            <Coins className="h-4 w-4" />
+            <span className="font-bold">{user.coins || 0} Coins</span>
+          </Badge>
+          <StreakDisplay />
+        </div>
       </motion.div>
 
       {/* Rank + XP Row */}
