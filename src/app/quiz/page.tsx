@@ -102,7 +102,6 @@ export default function QuizPage() {
       ratingChange: 0,
       xpEarned: 0,
       timeSpent,
-      typedAnswer: typedAnswer || undefined,
     };
 
     if (isCorrect) {
