@@ -126,7 +126,7 @@ export function StatsRadarChart({ filter, setFilter }: StatsRadarChartProps) {
                 fontWeight: 500,
                 boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'
               }}
-              formatter={(value: any, name: string, props: any) => [props.payload.realValue, props.payload.subject]}
+              formatter={(value: any, name: any, props: any) => [props.payload.realValue, props.payload.subject]}
               labelStyle={{ display: 'none' }}
             />
             <Radar
