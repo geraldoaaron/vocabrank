@@ -98,7 +98,7 @@ export function QuizRadarChart({ session }: QuizRadarChartProps) {
                 fontWeight: 500,
                 boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
               }}
-              formatter={(value: any, name: string) => [`${value}/100`, name]}
+              formatter={(value: any, name: any) => [`${value}/100`, name]}
               labelStyle={{ display: 'none' }}
             />
             <Radar
