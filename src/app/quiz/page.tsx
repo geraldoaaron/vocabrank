@@ -7,12 +7,12 @@ import { useUserStore } from '@/stores/user-store';
 import { useTimer } from '@/hooks/use-timer';
 import { useConfetti } from '@/hooks/use-confetti';
 import { useSound } from '@/hooks/use-sound';
-import { QUIZ_TIMER_SECONDS, QUIZ_AUTO_ADVANCE_MS } from '@/lib/constants';
+import { QUIZ_TIMER_SECONDS, QUIZ_TYPING_TIMER_SECONDS, QUIZ_AUTO_ADVANCE_MS } from '@/lib/constants';
 import { QuizSetup } from '@/components/quiz/quiz-setup';
 import { QuizHeader } from '@/components/quiz/quiz-header';
 import { QuizCard } from '@/components/quiz/quiz-card';
 import { QuizResults } from '@/components/quiz/quiz-results';
-import type { Difficulty, Category, QuizHistoryEntry } from '@/types';
+import type { Difficulty, Category, QuizHistoryEntry, GameplayType } from '@/types';
 import { toast } from 'sonner';
 
 type QuizPhase = 'setup' | 'playing' | 'results';
@@ -29,6 +29,7 @@ export default function QuizPage() {
     session,
     isAnswered,
     selectedOptionId,
+    typedAnswer: storeTypedAnswer,
     startQuiz,
     answerQuestion,
     timeoutQuestion,
@@ -46,17 +47,21 @@ export default function QuizPage() {
   const handleTimeout = () => {
     if (!session || isAnswered) return;
     const answer = timeoutQuestion();
-    handleAnswerResult(answer.isCorrect, null);
+    handleAnswerResult(answer.isCorrect, null, null, timerSeconds);
   };
 
+  const timerSeconds = (session?.gameplayType === 'typing_translate' || session?.gameplayType === 'typing_definition')
+    ? QUIZ_TYPING_TIMER_SECONDS
+    : QUIZ_TIMER_SECONDS;
+
   const { timeRemaining, reset: resetTimer } = useTimer(
-    QUIZ_TIMER_SECONDS,
+    timerSeconds,
     handleTimeout,
     phase === 'playing' && !isAnswered
   );
 
-  const handleStartQuiz = (difficulty: Difficulty | 'all', category: Category | 'all', count: number) => {
-    const started = startQuiz('practice', difficulty, category, count);
+  const handleStartQuiz = (gameplayType: GameplayType, difficulty: Difficulty | 'all', category: Category | 'all', count: number) => {
+    const started = startQuiz('practice', gameplayType, difficulty, category, count);
     if (!started) {
       toast.error('Belum ada soal untuk kategori & kesulitan ini. Coba kombinasi lain!');
       return;
@@ -68,15 +73,15 @@ export default function QuizPage() {
     resetTimer();
   };
 
-  const handleAnswer = (optionId: string) => {
+  const handleAnswer = (optionId: string | null, typedAnswer?: string) => {
     if (isAnswered || !session) return;
     playSound('click');
-    const timeSpent = QUIZ_TIMER_SECONDS - timeRemaining;
-    const answer = answerQuestion(optionId, timeSpent);
-    handleAnswerResult(answer.isCorrect, optionId, timeSpent);
+    const timeSpent = timerSeconds - timeRemaining;
+    const answer = answerQuestion(optionId, typedAnswer || null, timeSpent);
+    handleAnswerResult(answer.isCorrect, optionId, typedAnswer || null, timeSpent);
   };
 
-  const handleAnswerResult = (isCorrect: boolean, optionId: string | null, timeSpent: number = QUIZ_TIMER_SECONDS) => {
+  const handleAnswerResult = (isCorrect: boolean, optionId: string | null, typedAnswer: string | null, timeSpent: number = timerSeconds) => {
     if (!session) return;
     const currentQ = session.questions[session.currentIndex];
     const difficulty = currentQ.question.difficulty;
@@ -85,16 +90,19 @@ export default function QuizPage() {
       id: `hist-${Date.now()}`,
       sessionId: session.id,
       englishWord: currentQ.question.englishWord,
-      userAnswer: optionId
-        ? currentQ.options.find((o) => o.id === optionId)?.text || 'No answer'
-        : 'Timed out',
+      userAnswer: session.gameplayType === 'multiple_choice'
+        ? (optionId ? currentQ.options.find((o) => o.id === optionId)?.text || 'No answer' : 'Timed out')
+        : (typedAnswer || 'Timed out'),
       correctAnswer: currentQ.question.indonesianTranslation,
       isCorrect,
       timeAnswered: new Date().toISOString(),
       difficulty,
       category: currentQ.question.category,
+      gameplayType: session.gameplayType,
       ratingChange: 0,
       xpEarned: 0,
+      timeSpent,
+      typedAnswer: typedAnswer || undefined,
     };
 
     if (isCorrect) {
@@ -182,15 +190,18 @@ export default function QuizPage() {
               currentIndex={session.currentIndex}
               totalQuestions={session.totalQuestions}
               timeRemaining={timeRemaining}
+              totalTime={timerSeconds}
               score={session.score}
               rating={user.rating}
               ratingChange={lastRatingChange}
               xpEarned={lastXPEarned}
             />
             <QuizCard
+              session={session}
               question={session.questions[session.currentIndex]}
               isAnswered={isAnswered}
               selectedOptionId={selectedOptionId}
+              typedAnswer={storeTypedAnswer}
               onAnswer={handleAnswer}
             />
           </motion.div>

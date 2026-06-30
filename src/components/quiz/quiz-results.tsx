@@ -8,6 +8,7 @@ import { Trophy, Target, Zap, CheckCircle, XCircle, RotateCcw, Home } from 'luci
 import Link from 'next/link';
 import type { QuizSession } from '@/types';
 import { cn } from '@/lib/utils';
+import { QuizRadarChart } from '@/components/quiz/quiz-radar-chart';
 
 interface QuizResultsProps {
   session: QuizSession;
@@ -127,6 +128,15 @@ export function QuizResults({ session, totalXPEarned, totalRatingChange, totalCo
         </Card>
       </motion.div>
 
+      {/* Session Radar Chart */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+      >
+        <QuizRadarChart session={session} />
+      </motion.div>
+
       {/* Answers Review */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -138,9 +148,9 @@ export function QuizResults({ session, totalXPEarned, totalRatingChange, totalCo
           {session.questions.map((q, idx) => {
             const answer = answers[idx];
             const isCorrect = answer?.isCorrect ?? false;
-            const userAnswer = answer?.selectedOptionId
-              ? q.options.find(o => o.id === answer.selectedOptionId)?.text
-              : 'Timed out';
+            const userAnswer = session.gameplayType === 'multiple_choice'
+              ? (answer?.selectedOptionId ? q.options.find(o => o.id === answer.selectedOptionId)?.text : 'Timed out')
+              : (answer?.typedAnswer || 'Timed out');
 
             return (
               <div key={q.question.id} className="p-3 flex items-center gap-3">

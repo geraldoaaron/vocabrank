@@ -31,6 +31,7 @@ interface UserState {
   setClaimedFree5x: () => void;
   setClaimedMailboxReward: () => void;
   setClaimedBonusReward: () => void;
+  setClaimedCompensation: () => void;
   resetData: () => void;
 }
 
@@ -283,6 +284,11 @@ export const useUserStore = create<UserState>()(
       setClaimedBonusReward: () => 
         set((state) => ({
           user: { ...state.user, hasClaimedBonusReward: true },
+        })),
+
+      setClaimedCompensation: () =>
+        set((state) => ({
+          user: { ...state.user, hasClaimedCompensation: true },
         })),
 
       resetData: () =>

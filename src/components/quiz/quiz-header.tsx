@@ -10,6 +10,7 @@ interface QuizHeaderProps {
   currentIndex: number;
   totalQuestions: number;
   timeRemaining: number;
+  totalTime?: number;
   score: number;
   rating: number;
   ratingChange: number;
@@ -20,6 +21,7 @@ export function QuizHeader({
   currentIndex,
   totalQuestions,
   timeRemaining,
+  totalTime,
   score,
   rating,
   ratingChange,

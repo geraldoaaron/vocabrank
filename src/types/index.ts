@@ -43,6 +43,8 @@ export interface QuizOption {
 
 export type QuizMode = 'practice' | 'daily' | 'ranked';
 
+export type GameplayType = 'multiple_choice' | 'typing_translate' | 'typing_definition';
+
 export interface QuizQuestion {
   question: Question;
   options: QuizOption[];
@@ -51,6 +53,7 @@ export interface QuizQuestion {
 export interface QuizSession {
   id: string;
   mode: QuizMode;
+  gameplayType: GameplayType;
   difficulty: Difficulty | 'all';
   category: Category | 'all';
   questions: QuizQuestion[];
@@ -65,6 +68,7 @@ export interface QuizSession {
 export interface QuizAnswer {
   questionId: string;
   selectedOptionId: string | null;
+  typedAnswer?: string | null;
   isCorrect: boolean;
   timeSpent: number;
   ratingChange: number;
@@ -81,8 +85,10 @@ export interface QuizHistoryEntry {
   timeAnswered: string;
   difficulty: Difficulty;
   category: Category;
+  gameplayType?: GameplayType;
   ratingChange: number;
   xpEarned: number;
+  timeSpent?: number;
 }
 
 export interface User {
@@ -111,6 +117,7 @@ export interface User {
   hasClaimedFree5x: boolean;
   hasClaimedMailboxReward: boolean;
   hasClaimedBonusReward: boolean;
+  hasClaimedCompensation: boolean;
 }
 
 export interface Achievement {

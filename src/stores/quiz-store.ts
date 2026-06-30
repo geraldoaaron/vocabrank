@@ -1,7 +1,7 @@
 'use client';
 
 import { create } from 'zustand';
-import type { QuizQuestion, QuizSession, QuizAnswer, Difficulty, Category } from '@/types';
+import type { QuizQuestion, QuizSession, QuizAnswer, Difficulty, Category, GameplayType } from '@/types';
 import { VOCABULARY, generateQuizOptions, shuffleArray, getFilteredQuestions } from '@/data/vocabulary';
 import { useUserStore } from '@/stores/user-store';
 
@@ -9,11 +9,12 @@ interface QuizState {
   session: QuizSession | null;
   isAnswered: boolean;
   selectedOptionId: string | null;
+  typedAnswer: string | null;
   timeRemaining: number;
 
   // Actions
-  startQuiz: (mode: 'practice' | 'daily' | 'ranked', difficulty: Difficulty | 'all', category: Category | 'all', questionCount: number) => boolean;
-  answerQuestion: (optionId: string, timeSpent: number) => QuizAnswer;
+  startQuiz: (mode: 'practice' | 'daily' | 'ranked', gameplayType: GameplayType, difficulty: Difficulty | 'all', category: Category | 'all', questionCount: number) => boolean;
+  answerQuestion: (optionId: string | null, typedAnswer: string | null, timeSpent: number) => QuizAnswer;
   timeoutQuestion: () => QuizAnswer;
   nextQuestion: () => boolean; // returns false if quiz is over
   endQuiz: () => QuizSession | null;
@@ -25,9 +26,10 @@ export const useQuizStore = create<QuizState>()((set, get) => ({
   session: null,
   isAnswered: false,
   selectedOptionId: null,
+  typedAnswer: null,
   timeRemaining: 10,
 
-  startQuiz: (mode, difficulty, category, questionCount) => {
+  startQuiz: (mode, gameplayType, difficulty, category, questionCount) => {
     const userState = useUserStore.getState();
     const unlockedVocab = userState.user.unlockedVocab || [];
     
@@ -51,6 +53,7 @@ export const useQuizStore = create<QuizState>()((set, get) => ({
     const session: QuizSession = {
       id: `quiz-${Date.now()}`,
       mode,
+      gameplayType,
       difficulty,
       category,
       questions: quizQuestions,
@@ -61,23 +64,47 @@ export const useQuizStore = create<QuizState>()((set, get) => ({
       answers: [],
     };
 
-    set({ session, isAnswered: false, selectedOptionId: null, timeRemaining: 10 });
+    set({ session, isAnswered: false, selectedOptionId: null, typedAnswer: null, timeRemaining: 10 });
     return true;
   },
 
-  answerQuestion: (optionId, timeSpent) => {
+  answerQuestion: (optionId, typedAnswer, timeSpent) => {
     const { session } = get();
     if (!session) {
       return { questionId: '', selectedOptionId: null, isCorrect: false, timeSpent: 0, ratingChange: 0, xpEarned: 0 };
     }
 
     const currentQuestion = session.questions[session.currentIndex];
-    const selectedOption = currentQuestion.options.find((o) => o.id === optionId);
-    const isCorrect = selectedOption?.isCorrect ?? false;
+    let isCorrect = false;
+
+    if (session.gameplayType === 'multiple_choice') {
+      const selectedOption = currentQuestion.options.find((o) => o.id === optionId);
+      isCorrect = selectedOption?.isCorrect ?? false;
+    } else if (session.gameplayType === 'typing_translate' && typedAnswer) {
+      const targetStr = currentQuestion.question.indonesianTranslation;
+      const synonyms = currentQuestion.question.synonyms || [];
+      
+      const checkMatch = (input: string, target: string) => {
+        const normInput = input.toLowerCase().trim();
+        const normTarget = target.toLowerCase().trim();
+        if (normInput === normTarget) return true;
+        // Split by / or , to allow matching any part
+        const parts = normTarget.split(/[\/,]/).map(p => p.trim()).filter(Boolean);
+        if (parts.length > 1 && parts.includes(normInput)) return true;
+        return false;
+      };
+
+      isCorrect = checkMatch(typedAnswer, targetStr) || synonyms.some(s => checkMatch(typedAnswer, s));
+    } else if (session.gameplayType === 'typing_definition' && typedAnswer) {
+      const targetStr = currentQuestion.question.englishWord.toLowerCase().trim();
+      const inputStr = typedAnswer.toLowerCase().trim();
+      isCorrect = inputStr === targetStr;
+    }
 
     const answer: QuizAnswer = {
       questionId: currentQuestion.question.id,
       selectedOptionId: optionId,
+      typedAnswer,
       isCorrect,
       timeSpent,
       ratingChange: 0,
@@ -94,6 +121,7 @@ export const useQuizStore = create<QuizState>()((set, get) => ({
         : null,
       isAnswered: true,
       selectedOptionId: optionId,
+      typedAnswer,
     }));
 
     return answer;
@@ -109,6 +137,7 @@ export const useQuizStore = create<QuizState>()((set, get) => ({
     const answer: QuizAnswer = {
       questionId: currentQuestion.question.id,
       selectedOptionId: null,
+      typedAnswer: null,
       isCorrect: false,
       timeSpent: 10,
       ratingChange: 0,
@@ -124,6 +153,7 @@ export const useQuizStore = create<QuizState>()((set, get) => ({
         : null,
       isAnswered: true,
       selectedOptionId: null,
+      typedAnswer: null,
     }));
 
     return answer;
@@ -142,6 +172,7 @@ export const useQuizStore = create<QuizState>()((set, get) => ({
       session: { ...session, currentIndex: nextIndex },
       isAnswered: false,
       selectedOptionId: null,
+      typedAnswer: null,
       timeRemaining: 10,
     });
     return true;
@@ -161,7 +192,7 @@ export const useQuizStore = create<QuizState>()((set, get) => ({
   },
 
   resetQuiz: () => {
-    set({ session: null, isAnswered: false, selectedOptionId: null, timeRemaining: 10 });
+    set({ session: null, isAnswered: false, selectedOptionId: null, typedAnswer: null, timeRemaining: 10 });
   },
 
   setTimeRemaining: (time) => {

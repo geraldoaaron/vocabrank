@@ -17,18 +17,49 @@ import {
   Trophy, Edit3, Save, Award,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { StatsRadarChart } from '@/components/profile/stats-radar-chart';
+import type { GameplayType } from '@/types';
 
 export default function ProfilePage() {
   const user = useUserStore((s) => s.user);
+  const quizHistory = useUserStore((s) => s.quizHistory);
   const updateProfile = useUserStore((s) => s.updateProfile);
   const [isEditing, setIsEditing] = useState(false);
   const [username, setUsername] = useState(user.username);
   const [bio, setBio] = useState(user.bio);
+  const [filter, setFilter] = useState<'all' | GameplayType>('all');
 
   const tier = getRankTier(user.rating);
   const xpProgress = getXPProgressInLevel(user.xp);
   const accuracy = user.totalQuestions > 0 ? Math.round((user.correctAnswers / user.totalQuestions) * 100) : 0;
   const unlockedAchievements = ACHIEVEMENTS.filter(a => user.achievements.includes(a.id));
+
+  // Dynamic filter logic
+  const filteredHistory = filter === 'all' 
+    ? quizHistory 
+    : quizHistory.filter(h => h.gameplayType === filter || (!h.gameplayType && filter === 'multiple_choice'));
+
+  const filteredTotal = filteredHistory.length;
+  const filteredCorrect = filteredHistory.filter(h => h.isCorrect).length;
+  const filteredWrong = filteredTotal - filteredCorrect;
+  const filteredAccuracy = filteredTotal > 0 ? Math.round((filteredCorrect / filteredTotal) * 100) : 0;
+  
+  let currentStreak = 0;
+  let maxStreak = 0;
+  filteredHistory.forEach(a => {
+    if (a.isCorrect) {
+      currentStreak++;
+      if (currentStreak > maxStreak) maxStreak = currentStreak;
+    } else {
+      currentStreak = 0;
+    }
+  });
+
+  const displayTotal = filter === 'all' ? user.totalQuestions : filteredTotal;
+  const displayCorrect = filter === 'all' ? user.correctAnswers : filteredCorrect;
+  const displayWrong = filter === 'all' ? user.wrongAnswers : filteredWrong;
+  const displayAccuracy = filter === 'all' ? accuracy : filteredAccuracy;
+  const displayBestStreak = filter === 'all' ? user.bestStreak : maxStreak;
 
   const handleSave = () => {
     updateProfile({ username, bio });
@@ -36,7 +67,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="p-4 lg:p-8 max-w-3xl mx-auto space-y-6">
+    <div className="p-4 lg:p-8 max-w-4xl mx-auto space-y-6">
       {/* Profile Header */}
       <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
         <Card className="p-6 relative overflow-hidden border-border/50">
@@ -93,53 +124,50 @@ export default function ProfilePage() {
         </Card>
       </motion.div>
 
-      {/* Stats Grid */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-      >
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {[
-            { icon: Target, label: 'Rating', value: user.rating, color: 'text-indigo-500', bg: 'bg-indigo-500/10' },
-            { icon: Zap, label: 'Total XP', value: user.xp.toLocaleString(), color: 'text-amber-500', bg: 'bg-amber-500/10' },
-            { icon: Star, label: 'Level', value: user.level, color: 'text-amber-500', bg: 'bg-amber-500/10' },
-            { icon: BarChart3, label: 'Accuracy', value: `${accuracy}%`, color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
-            { icon: HelpCircle, label: 'Total', value: user.totalQuestions, color: 'text-purple-500', bg: 'bg-purple-500/10' },
-            { icon: CheckCircle, label: 'Correct', value: user.correctAnswers, color: 'text-green-500', bg: 'bg-green-500/10' },
-            { icon: XCircle, label: 'Wrong', value: user.wrongAnswers, color: 'text-red-500', bg: 'bg-red-500/10' },
-            { icon: Trophy, label: 'Best Streak', value: `${user.bestStreak}🔥`, color: 'text-orange-500', bg: 'bg-orange-500/10' },
-          ].map((stat) => (
-            <Card key={stat.label} className="p-3 border-border/50">
-              <div className={cn('p-1.5 rounded-lg w-fit mb-1.5', stat.bg)}>
-                <stat.icon className={cn('h-3.5 w-3.5', stat.color)} />
-              </div>
-              <p className="text-lg font-bold">{stat.value}</p>
-              <p className="text-[10px] text-muted-foreground">{stat.label}</p>
-            </Card>
-          ))}
-        </div>
-      </motion.div>
+      {/* Stats and Radar Combined */}
+      <div className="flex flex-col md:flex-row gap-4 lg:gap-6">
+        
+        {/* Radar Chart: Top on Mobile, Right on Desktop */}
+        <motion.div 
+          className="w-full md:w-[300px] lg:w-[320px] shrink-0 order-1 md:order-2"
+          initial={{ opacity: 0, y: 20 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ delay: 0.1 }}
+        >
+          <StatsRadarChart filter={filter} setFilter={setFilter} />
+        </motion.div>
+
+        {/* Stats Grid: Bottom on Mobile, Left on Desktop */}
+        <motion.div
+          className="flex-1 order-2 md:order-1"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-2 lg:grid-cols-4 gap-3 h-full content-start">
+            {[
+              { icon: Target, label: 'Rating', value: user.rating, color: 'text-indigo-500', bg: 'bg-indigo-500/10' },
+              { icon: Zap, label: 'Total XP', value: user.xp.toLocaleString(), color: 'text-amber-500', bg: 'bg-amber-500/10' },
+              { icon: Star, label: 'Level', value: user.level, color: 'text-amber-500', bg: 'bg-amber-500/10' },
+              { icon: BarChart3, label: 'Accuracy', value: `${displayAccuracy}%`, color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
+              { icon: HelpCircle, label: 'Total', value: displayTotal, color: 'text-purple-500', bg: 'bg-purple-500/10' },
+              { icon: CheckCircle, label: 'Correct', value: displayCorrect, color: 'text-green-500', bg: 'bg-green-500/10' },
+              { icon: XCircle, label: 'Wrong', value: displayWrong, color: 'text-red-500', bg: 'bg-red-500/10' },
+              { icon: Trophy, label: 'Best Streak', value: `${displayBestStreak}🔥`, color: 'text-orange-500', bg: 'bg-orange-500/10' },
+            ].map((stat) => (
+              <Card key={stat.label} className="p-3 border-border/50">
+                <div className={cn('p-1.5 rounded-lg w-fit mb-1.5', stat.bg)}>
+                  <stat.icon className={cn('h-3.5 w-3.5', stat.color)} />
+                </div>
+                <p className="text-lg font-bold">{stat.value}</p>
+                <p className="text-[10px] text-muted-foreground">{stat.label}</p>
+              </Card>
+            ))}
+          </div>
+        </motion.div>
+      </div>
 
       {/* XP Progress */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-        <Card className="p-4 border-border/50">
-          <div className="flex justify-between text-sm mb-2">
-            <span className="font-medium">Level {user.level} → {user.level + 1}</span>
-            <span className="text-muted-foreground">{xpProgress.current} / {xpProgress.needed} XP</span>
-          </div>
-          <div className="h-3 bg-muted rounded-full overflow-hidden">
-            <motion.div
-              className="h-full rounded-full bg-gradient-to-r from-amber-400 via-orange-500 to-pink-500"
-              initial={{ width: 0 }}
-              animate={{ width: `${xpProgress.percentage}%` }}
-              transition={{ duration: 1 }}
-            />
-          </div>
-        </Card>
-      </motion.div>
-
-      {/* Achievements */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-lg font-semibold flex items-center gap-2">

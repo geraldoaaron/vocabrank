@@ -5,8 +5,14 @@ import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Gamepad2, Zap, BookOpen, GraduationCap, Brain, ArrowRight } from 'lucide-react';
-import type { Difficulty, Category } from '@/types';
+import { Gamepad2, Zap, BookOpen, GraduationCap, Brain, ArrowRight, Keyboard, ListTodo, FileText } from 'lucide-react';
+import type { Difficulty, Category, GameplayType } from '@/types';
+
+const gameplayModes: { value: GameplayType; label: string; icon: React.ReactNode; desc: string }[] = [
+  { value: 'multiple_choice', label: 'Multiple Choice', icon: <ListTodo className="h-4 w-4" />, desc: 'Pilih 1 dari 4 jawaban' },
+  { value: 'typing_translate', label: 'Translate Typing', icon: <Keyboard className="h-4 w-4" />, desc: 'Ketik arti bahasa Indonesianya' },
+  { value: 'typing_definition', label: 'Definition Guess', icon: <FileText className="h-4 w-4" />, desc: 'Tebak kata dari deskripsinya' },
+];
 
 const difficulties: { value: Difficulty | 'all'; label: string; color: string; icon: string }[] = [
   { value: 'all', label: 'All Levels', color: 'bg-gradient-to-r from-indigo-500 to-purple-500', icon: '🎯' },
@@ -32,10 +38,11 @@ const categories: { value: Category | 'all'; label: string; icon: React.ReactNod
 const questionCounts = [10, 15, 20, 30];
 
 interface QuizSetupProps {
-  onStart: (difficulty: Difficulty | 'all', category: Category | 'all', count: number) => void;
+  onStart: (gameplayType: GameplayType, difficulty: Difficulty | 'all', category: Category | 'all', count: number) => void;
 }
 
 export function QuizSetup({ onStart }: QuizSetupProps) {
+  const [gameplayType, setGameplayType] = useState<GameplayType>('multiple_choice');
   const [difficulty, setDifficulty] = useState<Difficulty | 'all'>('all');
   const [category, setCategory] = useState<Category | 'all'>('all');
   const [count, setCount] = useState(10);
@@ -53,6 +60,30 @@ export function QuizSetup({ onStart }: QuizSetupProps) {
         </div>
         <h1 className="text-3xl font-bold tracking-tight">Choose Your Challenge</h1>
         <p className="text-muted-foreground mt-2">Select difficulty, category, and number of questions</p>
+      </motion.div>
+
+      {/* Gameplay Type */}
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}>
+        <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
+          <Gamepad2 className="h-4 w-4 text-primary" /> Gameplay Mode
+        </h3>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {gameplayModes.map((mode) => (
+            <Card
+              key={mode.value}
+              className={`p-3 cursor-pointer transition-all border-2 ${gameplayType === mode.value ? 'border-primary bg-primary/5 shadow-md' : 'border-border/50 hover:border-primary/30'}`}
+              onClick={() => setGameplayType(mode.value)}
+            >
+              <div className="flex items-center gap-2 mb-1">
+                <div className={`p-1.5 rounded-md ${gameplayType === mode.value ? 'bg-primary text-white' : 'bg-muted text-muted-foreground'}`}>
+                  {mode.icon}
+                </div>
+                <span className="font-medium text-sm">{mode.label}</span>
+              </div>
+              <p className="text-[10px] text-muted-foreground">{mode.desc}</p>
+            </Card>
+          ))}
+        </div>
       </motion.div>
 
       {/* Difficulty */}
@@ -127,7 +158,7 @@ export function QuizSetup({ onStart }: QuizSetupProps) {
             <Button
               size="lg"
               className="rounded-xl gap-2 gradient-primary text-white shadow-lg shadow-indigo-500/25 hover:shadow-xl transition-all hover:scale-105 active:scale-95"
-              onClick={() => onStart(difficulty, category, count)}
+              onClick={() => onStart(gameplayType, difficulty, category, count)}
             >
               Start Quiz
               <ArrowRight className="h-4 w-4" />

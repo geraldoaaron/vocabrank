@@ -3,24 +3,67 @@
 import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import type { QuizQuestion } from '@/types';
-import { CheckCircle2, XCircle, Volume2 } from 'lucide-react';
+import type { QuizQuestion, QuizSession } from '@/types';
+import { CheckCircle2, XCircle, Volume2, CornerDownLeft } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 interface QuizCardProps {
+  session: QuizSession;
   question: QuizQuestion;
   isAnswered: boolean;
   selectedOptionId: string | null;
-  onAnswer: (optionId: string) => void;
+  typedAnswer?: string | null;
+  onAnswer: (optionId: string | null, typedAnswer?: string) => void;
 }
 
-export function QuizCard({ question, isAnswered, selectedOptionId, onAnswer }: QuizCardProps) {
+export function QuizCard({ session, question, isAnswered, selectedOptionId, typedAnswer, onAnswer }: QuizCardProps) {
+  const [inputValue, setInputValue] = useState('');
+
+  // Reset input when question changes
+  useEffect(() => {
+    setInputValue('');
+  }, [question.question.id]);
+
   const difficultyColors: Record<string, string> = {
     easy: 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20',
     medium: 'bg-amber-500/10 text-amber-600 border-amber-500/20',
     hard: 'bg-orange-500/10 text-orange-600 border-orange-500/20',
     expert: 'bg-red-500/10 text-red-600 border-red-500/20',
   };
+
+  const isTypingMode = session.gameplayType === 'typing_translate' || session.gameplayType === 'typing_definition';
+  const isDefinitionMode = session.gameplayType === 'typing_definition';
+
+  const handleSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!isAnswered && inputValue.trim()) {
+      onAnswer(null, inputValue.trim());
+    }
+  };
+
+  const renderPronunciationBtn = (word: string) => (
+    <button
+      onClick={() => {
+        if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance(word);
+          utterance.lang = 'en-US';
+          const voices = window.speechSynthesis.getVoices();
+          const englishVoice = voices.find(v => v.lang.startsWith('en') || v.name.includes('English'));
+          if (englishVoice) utterance.voice = englishVoice;
+          window.speechSynthesis.speak(utterance);
+        }
+      }}
+      className="p-2 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors cursor-pointer shrink-0"
+      title="Listen to pronunciation"
+      aria-label="Play pronunciation"
+    >
+      <Volume2 className="h-5 w-5" />
+    </button>
+  );
 
   return (
     <motion.div
@@ -41,87 +84,139 @@ export function QuizCard({ question, isAnswered, selectedOptionId, onAnswer }: Q
               {question.question.category}
             </Badge>
           </div>
-          <p className="text-sm text-muted-foreground mb-2">
-            What is the Indonesian meaning of:
-          </p>
-          <div className="flex items-center justify-center gap-3 mb-3">
-            <h2 className="text-3xl lg:text-4xl font-bold gradient-text">
-              {question.question.englishWord}
-            </h2>
-            <button
-              onClick={() => {
-                if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-                  window.speechSynthesis.cancel();
-                  const utterance = new SpeechSynthesisUtterance(question.question.englishWord);
-                  utterance.lang = 'en-US';
-                  
-                  const voices = window.speechSynthesis.getVoices();
-                  const englishVoice = voices.find(v => v.lang.startsWith('en') || v.name.includes('English'));
-                  if (englishVoice) {
-                    utterance.voice = englishVoice;
-                  }
-                  
-                  window.speechSynthesis.speak(utterance);
-                }
-              }}
-              className="p-2 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors cursor-pointer"
-              title="Listen to pronunciation"
-              aria-label="Play pronunciation"
-            >
-              <Volume2 className="h-5 w-5" />
-            </button>
-          </div>
-          <p className="text-xs text-muted-foreground italic">
-            {question.question.partOfSpeech} — &ldquo;{question.question.exampleSentence}&rdquo;
-          </p>
+
+          {!isDefinitionMode ? (
+            // Normal / Translate Typing Mode (Shows English Word)
+            <>
+              <p className="text-sm text-muted-foreground mb-2">What is the Indonesian meaning of:</p>
+              <div className="flex items-center justify-center gap-3 mb-3">
+                <h2 className="text-3xl lg:text-4xl font-bold gradient-text">
+                  {question.question.englishWord}
+                </h2>
+                {renderPronunciationBtn(question.question.englishWord)}
+              </div>
+              <p className="text-xs text-muted-foreground italic">
+                {question.question.partOfSpeech} — &ldquo;{question.question.exampleSentence}&rdquo;
+              </p>
+            </>
+          ) : (
+            // Definition Guess Mode (Shows Explanation)
+            <>
+              <p className="text-sm text-muted-foreground mb-4">Guess the English word from this description:</p>
+              <div className="bg-muted/30 p-4 rounded-xl border border-border/50 mb-4">
+                <p className="text-lg font-medium text-foreground mb-2">
+                  &ldquo;{question.question.explanation || question.question.exampleSentence}&rdquo;
+                </p>
+                {question.question.explanationIndo && (
+                  <p className="text-sm text-muted-foreground italic">
+                    ({question.question.explanationIndo})
+                  </p>
+                )}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Hint: It is a <span className="font-semibold text-primary">{question.question.partOfSpeech}</span>
+              </p>
+            </>
+          )}
         </div>
       </Card>
 
-      {/* Answer Options */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {question.options.map((option, idx) => {
-          const isSelected = selectedOptionId === option.id;
-          const isCorrectOption = option.isCorrect;
-          const showCorrect = isAnswered && isCorrectOption;
-          const showWrong = isAnswered && isSelected && !isCorrectOption;
+      {/* Answer Options / Input */}
+      {!isTypingMode ? (
+        // MULTIPLE CHOICE MODE
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {question.options.map((option, idx) => {
+            const isSelected = selectedOptionId === option.id;
+            const isCorrectOption = option.isCorrect;
+            const showCorrect = isAnswered && isCorrectOption;
+            const showWrong = isAnswered && isSelected && !isCorrectOption;
 
-          return (
-            <motion.button
-              key={option.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.05 * idx }}
-              whileHover={!isAnswered ? { y: -2 } : {}}
-              whileTap={!isAnswered ? { scale: 0.98 } : {}}
-              onClick={() => !isAnswered && onAnswer(option.id)}
+            return (
+              <motion.button
+                key={option.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.05 * idx }}
+                whileHover={!isAnswered ? { y: -2 } : {}}
+                whileTap={!isAnswered ? { scale: 0.98 } : {}}
+                onClick={() => !isAnswered && onAnswer(option.id)}
+                disabled={isAnswered}
+                style={{ WebkitTransform: 'translateZ(0)' }}
+                className={cn(
+                  'p-4 rounded-2xl border-2 text-left font-medium transition-colors duration-200 flex items-center gap-3 group',
+                  !isAnswered && 'hover:border-primary/50 hover:bg-primary/5 hover:shadow-md cursor-pointer',
+                  isAnswered && !showCorrect && !showWrong && 'opacity-50',
+                  showCorrect && 'border-emerald-500 bg-emerald-500/10 shadow-lg shadow-emerald-500/20',
+                  showWrong && 'border-red-500 bg-red-500/10 animate-shake',
+                  !isAnswered && 'border-border bg-card'
+                )}
+              >
+                <span className={cn(
+                  'flex items-center justify-center w-8 h-8 rounded-xl text-sm font-bold shrink-0 transition-colors',
+                  showCorrect ? 'bg-emerald-500 text-white' : showWrong ? 'bg-red-500 text-white' : 'bg-muted text-muted-foreground group-hover:bg-primary group-hover:text-primary-foreground'
+                )}>
+                  {showCorrect ? <CheckCircle2 className="h-4 w-4" /> : showWrong ? <XCircle className="h-4 w-4" /> : String.fromCharCode(65 + idx)}
+                </span>
+                <span className={cn(
+                  'text-sm lg:text-base',
+                  showCorrect && 'text-emerald-700 dark:text-emerald-400 font-semibold',
+                  showWrong && 'text-red-700 dark:text-red-400'
+                )}>
+                  {option.text}
+                </span>
+              </motion.button>
+            );
+          })}
+        </div>
+      ) : (
+        // TYPING MODE
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <form onSubmit={handleSubmit} className="relative">
+            <Input
+              value={isAnswered && typedAnswer ? typedAnswer : inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
               disabled={isAnswered}
-              style={{ WebkitTransform: 'translateZ(0)' }} // Hardware acceleration for iOS
+              autoFocus
+              placeholder={isDefinitionMode ? "Ketik kata bahasa Inggris-nya..." : "Ketik arti bahasa Indonesianya..."}
               className={cn(
-                'p-4 rounded-2xl border-2 text-left font-medium transition-colors duration-200 flex items-center gap-3 group',
-                !isAnswered && 'hover:border-primary/50 hover:bg-primary/5 hover:shadow-md cursor-pointer',
-                isAnswered && !showCorrect && !showWrong && 'opacity-50',
-                showCorrect && 'border-emerald-500 bg-emerald-500/10 shadow-lg shadow-emerald-500/20',
-                showWrong && 'border-red-500 bg-red-500/10 animate-shake',
-                !isAnswered && 'border-border bg-card'
+                "w-full h-16 text-center text-lg lg:text-xl rounded-2xl border-2 shadow-sm font-medium pr-16 transition-colors",
+                !isAnswered && "focus-visible:ring-primary focus-visible:border-primary",
+                isAnswered && typedAnswer && (
+                  (isDefinitionMode && typedAnswer.toLowerCase().trim() === question.question.englishWord.toLowerCase().trim()) ||
+                  (!isDefinitionMode && (
+                    typedAnswer.toLowerCase().trim() === question.question.indonesianTranslation.toLowerCase().trim() ||
+                    (question.question.synonyms?.map(s => s.toLowerCase().trim()) || []).includes(typedAnswer.toLowerCase().trim())
+                  ))
+                ) ? "border-emerald-500 bg-emerald-500/10 text-emerald-700" :
+                isAnswered ? "border-red-500 bg-red-500/10 text-red-700 animate-shake" : "bg-card"
               )}
-            >
-              <span className={cn(
-                'flex items-center justify-center w-8 h-8 rounded-xl text-sm font-bold shrink-0 transition-colors',
-                showCorrect ? 'bg-emerald-500 text-white' : showWrong ? 'bg-red-500 text-white' : 'bg-muted text-muted-foreground group-hover:bg-primary group-hover:text-primary-foreground'
-              )}>
-                {showCorrect ? <CheckCircle2 className="h-4 w-4" /> : showWrong ? <XCircle className="h-4 w-4" /> : String.fromCharCode(65 + idx)}
-              </span>
-              <span className={cn(
-                'text-sm lg:text-base',
-                showCorrect && 'text-emerald-700 dark:text-emerald-400 font-semibold',
-                showWrong && 'text-red-700 dark:text-red-400'
-              )}>
-                {option.text}
-              </span>
-            </motion.button>
-          );
-        })}
-      </div>
+            />
+            {!isAnswered && (
+              <Button 
+                type="submit" 
+                size="icon" 
+                className="absolute right-2 top-2 h-12 w-12 rounded-xl"
+                disabled={!inputValue.trim()}
+              >
+                <CornerDownLeft className="h-5 w-5" />
+              </Button>
+            )}
+          </form>
+
+          {/* Reveal answer if wrong or timed out */}
+          {isAnswered && (
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-4">
+              <Card className="p-4 border-emerald-500/20 bg-emerald-500/10 flex items-center justify-center gap-3">
+                <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0" />
+                <p className="text-emerald-700 dark:text-emerald-400 font-medium text-center text-sm lg:text-base">
+                  Correct Answer: <span className="font-bold underline decoration-emerald-500/30 underline-offset-4">{isDefinitionMode ? question.question.englishWord : question.question.indonesianTranslation}</span>
+                </p>
+                {isDefinitionMode && renderPronunciationBtn(question.question.englishWord)}
+              </Card>
+            </motion.div>
+          )}
+        </motion.div>
+      )}
     </motion.div>
   );
 }

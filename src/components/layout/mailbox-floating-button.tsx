@@ -21,6 +21,7 @@ export function MailboxFloatingButton() {
   const user = useUserStore((s) => s.user);
   const setClaimedMailboxReward = useUserStore((s) => s.setClaimedMailboxReward);
   const setClaimedBonusReward = useUserStore((s) => s.setClaimedBonusReward);
+  const setClaimedCompensation = useUserStore((s) => s.setClaimedCompensation);
   const addCoins = useUserStore((s) => s.addCoins);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -29,7 +30,7 @@ export function MailboxFloatingButton() {
     return null;
   }
 
-  const hasUnread = !user.hasClaimedMailboxReward || !user.hasClaimedBonusReward;
+  const hasUnread = !user.hasClaimedMailboxReward || !user.hasClaimedBonusReward || !user.hasClaimedCompensation;
 
   const handleClaim = () => {
     addCoins(500);
@@ -41,6 +42,12 @@ export function MailboxFloatingButton() {
     addCoins(5000);
     setClaimedBonusReward();
     toast.success('Claimed 5000 Bonus Coins!');
+  };
+
+  const handleClaimCompensation = () => {
+    addCoins(20000);
+    setClaimedCompensation();
+    toast.success('Claimed 20,000 Compensation Coins!');
   };
 
   return (
@@ -72,8 +79,30 @@ export function MailboxFloatingButton() {
           </TabsList>
           
           <TabsContent value="list" className="mt-4 space-y-4 outline-none">
-            {(!user.hasClaimedMailboxReward || !user.hasClaimedBonusReward) ? (
+            {(!user.hasClaimedMailboxReward || !user.hasClaimedBonusReward || !user.hasClaimedCompensation) ? (
               <>
+                {!user.hasClaimedCompensation && (
+                  <div className="p-4 rounded-xl border bg-purple-500/5 border-purple-500/30">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex gap-3">
+                        <div className="h-10 w-10 rounded-full flex items-center justify-center shrink-0 bg-purple-500/20 text-purple-500">
+                          <Gift className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-sm">Apology Compensation 🛠️</h3>
+                          <p className="text-xs text-muted-foreground mt-1">Please accept this 20,000 Coins compensation for the recent maintenance and UI bugs.</p>
+                          
+                          <div className="mt-3">
+                            <Button onClick={handleClaimCompensation} size="sm" className="h-8 rounded-full px-4 text-xs font-semibold bg-purple-500 hover:bg-purple-600 text-white">
+                              Claim 20,000 Coins
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
                 {!user.hasClaimedMailboxReward && (
                   <div className="p-4 rounded-xl border bg-primary/5 border-primary/30">
                     <div className="flex items-start justify-between gap-4">
@@ -126,8 +155,28 @@ export function MailboxFloatingButton() {
           </TabsContent>
           
           <TabsContent value="history" className="mt-4 space-y-4 outline-none">
-            {(user.hasClaimedMailboxReward || user.hasClaimedBonusReward) ? (
+            {(user.hasClaimedMailboxReward || user.hasClaimedBonusReward || user.hasClaimedCompensation) ? (
               <>
+                {user.hasClaimedCompensation && (
+                  <div className="p-4 rounded-xl border bg-muted/30 border-border">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex gap-3">
+                        <div className="h-10 w-10 rounded-full flex items-center justify-center shrink-0 bg-muted text-muted-foreground">
+                          <Gift className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-sm">Apology Compensation 🛠️</h3>
+                          <p className="text-xs text-muted-foreground mt-1">You received 20,000 Coins as maintenance compensation.</p>
+                          
+                          <div className="mt-2 flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+                            <CheckCircle2 className="h-4 w-4" /> Claimed
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
                 {user.hasClaimedBonusReward && (
                   <div className="p-4 rounded-xl border bg-muted/30 border-border">
                     <div className="flex items-start justify-between gap-4">

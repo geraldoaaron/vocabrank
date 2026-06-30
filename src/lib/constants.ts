@@ -80,6 +80,7 @@ export const DAILY_CHALLENGE_BONUS_RATING = 25;
 
 // Quiz config
 export const QUIZ_TIMER_SECONDS = 20;
+export const QUIZ_TYPING_TIMER_SECONDS = 25;
 export const QUIZ_OPTIONS_COUNT = 4;
 export const DEFAULT_QUIZ_QUESTIONS = 10;
 export const QUIZ_AUTO_ADVANCE_MS = 1500;
@@ -111,6 +112,7 @@ export const DEFAULT_USER = {
   hasClaimedFree5x: false,
   hasClaimedMailboxReward: false,
   hasClaimedBonusReward: false,
+  hasClaimedCompensation: false,
 };
 
 // Nav items

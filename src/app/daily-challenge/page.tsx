@@ -70,7 +70,7 @@ export default function DailyChallengeQuiz() {
   );
 
   const handleStart = () => {
-    const started = startQuiz('daily', 'all', 'all', DAILY_CHALLENGE_QUESTIONS);
+    const started = startQuiz('daily', 'multiple_choice', 'all', 'all', DAILY_CHALLENGE_QUESTIONS);
     if (!started) {
       toast.error('Gagal memulai daily challenge. Data soal tidak tersedia.');
       return;
@@ -82,11 +82,11 @@ export default function DailyChallengeQuiz() {
     resetTimer();
   };
 
-  const handleAnswer = (optionId: string) => {
+  const handleAnswer = (optionId: string | null, typedAnswer?: string) => {
     if (isAnswered || !session) return;
     playSound('click');
     const timeSpent = QUIZ_TIMER_SECONDS - timeRemaining;
-    answerQuestion(optionId, timeSpent);
+    answerQuestion(optionId, typedAnswer || null, timeSpent);
     const currentQ = session.questions[session.currentIndex];
     const selectedOption = currentQ.options.find(o => o.id === optionId);
     handleAnswerResult(selectedOption?.isCorrect ?? false, optionId, timeSpent);
@@ -109,6 +109,7 @@ export default function DailyChallengeQuiz() {
       timeAnswered: new Date().toISOString(),
       difficulty,
       category: currentQ.question.category,
+      gameplayType: 'multiple_choice',
       ratingChange: 0,
       xpEarned: 0,
     };
@@ -270,6 +271,7 @@ export default function DailyChallengeQuiz() {
               xpEarned={lastXPEarned}
             />
             <QuizCard
+              session={session}
               question={session.questions[session.currentIndex]}
               isAnswered={isAnswered}
               selectedOptionId={selectedOptionId}
