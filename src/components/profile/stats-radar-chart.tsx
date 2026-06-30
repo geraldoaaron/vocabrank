@@ -108,9 +108,9 @@ export function StatsRadarChart({ filter, setFilter }: StatsRadarChartProps) {
           </SelectContent>
         </Select>
       </div>
-      <div className="flex-1 w-full h-full mt-6">
+      <div className="flex-1 w-full h-full mt-6 [&_*]:outline-none">
         <ResponsiveContainer width="100%" height="100%">
-          <RadarChart cx="50%" cy="50%" outerRadius="65%" data={data}>
+          <RadarChart cx="50%" cy="50%" outerRadius="65%" data={data} style={{ outline: 'none' }}>
             <PolarGrid stroke={gridColor} />
             <PolarAngleAxis 
               dataKey="subject" 
