@@ -123,6 +123,7 @@ export const useUserStore = create<UserState>()(
       },
 
       addWrongAnswer: (difficulty, entry) => {
+        const state = get();
         const kFactor = ELO_K_FACTOR[difficulty];
         const ratingChange = -Math.round(kFactor * WRONG_ANSWER_PENALTY);
 
