@@ -78,6 +78,7 @@ export interface QuizAnswer {
 export interface QuizHistoryEntry {
   id: string;
   sessionId: string;
+  vocabId?: string;
   englishWord: string;
   userAnswer: string;
   correctAnswer: string;
@@ -118,6 +119,7 @@ export interface User {
   hasClaimedMailboxReward: boolean;
   hasClaimedBonusReward: boolean;
   hasClaimedCompensation: boolean;
+  vocabMastery?: Record<string, number>;
 }
 
 export interface Achievement {

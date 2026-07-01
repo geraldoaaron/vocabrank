@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUserStore } from '@/stores/user-store';
 import { VOCABULARY } from '@/data/vocabulary';
@@ -34,6 +34,7 @@ export default function GachaPage() {
   
   const [pullResults, setPullResults] = useState<PullResult[] | null>(null);
   const [isPulling, setIsPulling] = useState(false);
+  const isPullingRef = useRef(false);
 
   const performPull = (count: number, guaranteedRare: boolean = false): PullResult[] => {
     const results: PullResult[] = [];
@@ -78,6 +79,8 @@ export default function GachaPage() {
   };
 
   const handlePull = (count: number, cost: number, guaranteedRare: boolean = false) => {
+    if (isPullingRef.current) return;
+    
     const currentCoins = user.coins || 0;
     if (currentCoins < cost) {
       toast.error('Not enough coins!');
@@ -85,6 +88,7 @@ export default function GachaPage() {
       return;
     }
 
+    isPullingRef.current = true;
     setIsPulling(true);
     playSound('achievement');
 
@@ -108,6 +112,7 @@ export default function GachaPage() {
 
       setPullResults(results);
       setIsPulling(false);
+      isPullingRef.current = false;
 
       if (results.some(r => r.vocab.difficulty === 'expert' || r.vocab.difficulty === 'hard')) {
         fireConfetti();
@@ -116,6 +121,8 @@ export default function GachaPage() {
   };
 
   const handleStarterPull = () => {
+    if (isPullingRef.current) return;
+    isPullingRef.current = true;
     setIsPulling(true);
     playSound('achievement');
 
@@ -133,11 +140,14 @@ export default function GachaPage() {
 
       setPullResults(results);
       setIsPulling(false);
+      isPullingRef.current = false;
       fireConfetti();
     }, 1500);
   };
 
   const handleStarter5xPull = () => {
+    if (isPullingRef.current) return;
+    isPullingRef.current = true;
     setIsPulling(true);
     playSound('achievement');
 

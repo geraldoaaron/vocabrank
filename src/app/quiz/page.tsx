@@ -89,6 +89,7 @@ export default function QuizPage() {
     const historyEntry: QuizHistoryEntry = {
       id: `hist-${Date.now()}`,
       sessionId: session.id,
+      vocabId: currentQ.question.id,
       englishWord: currentQ.question.englishWord,
       userAnswer: session.gameplayType === 'multiple_choice'
         ? (optionId ? currentQ.options.find((o) => o.id === optionId)?.text || 'No answer' : 'Timed out')

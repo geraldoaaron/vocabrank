@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useUserStore } from '@/stores/user-store';
 import { VOCABULARY } from '@/data/vocabulary';
+import { getVocabMasteryLevel, MASTERY_TIERS } from '@/lib/constants';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -33,6 +34,7 @@ export default function GalleryPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showUnlockedFirst, setShowUnlockedFirst] = useState(true);
   const [selectedVocab, setSelectedVocab] = useState<Question | null>(null);
+  const [showMasteryRules, setShowMasteryRules] = useState(false);
 
   const playPronunciation = (text: string) => {
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
@@ -85,6 +87,7 @@ export default function GalleryPage() {
   });
 
   const unlockedVocab = user.unlockedVocab || [];
+  const vocabMastery = user.vocabMastery || {};
   const unlockedCount = unlockedVocab.length;
   const totalCount = VOCABULARY.length;
   const progress = Math.round((unlockedCount / totalCount) * 100);
@@ -176,6 +179,15 @@ export default function GalleryPage() {
             {filteredVocab.map((vocab, idx) => {
               const isUnlocked = unlockedVocab.includes(vocab.id);
               const rarityInfo = RARITY_MAP[vocab.difficulty];
+              const masteryPoints = vocabMastery[vocab.id] || 0;
+              const masteryLevel = getVocabMasteryLevel(masteryPoints);
+              const masteryBg = masteryLevel.solidBg;
+              
+              // Find next tier for progress bar
+              const currentTierIndex = MASTERY_TIERS.findIndex(t => t.name === masteryLevel.name);
+              const nextTier = MASTERY_TIERS[currentTierIndex + 1];
+              const maxPoints = nextTier ? nextTier.min : 5000;
+              const progressPercentage = Math.min(100, Math.round((masteryPoints / maxPoints) * 100));
 
               return (
                 <motion.div
@@ -197,9 +209,17 @@ export default function GalleryPage() {
                       {rarityInfo.label}
                     </Badge>
 
-                    {/* Lock Status Icon */}
-                    <div className={`absolute top-2 right-2 ${rarityInfo.color}`}>
-                      {isUnlocked ? null : <Lock className="h-3 w-3" />}
+                    {/* Lock Status Icon or Mastery Badge */}
+                    <div className="absolute top-2 right-2">
+                      {isUnlocked ? (
+                         <Badge variant="secondary" className={`${masteryLevel.color} ${masteryLevel.bg} border-0 text-[9px] uppercase px-1.5 py-0`}>
+                           {masteryLevel.name}
+                         </Badge>
+                      ) : (
+                        <div className={rarityInfo.color}>
+                          <Lock className="h-3 w-3" />
+                        </div>
+                      )}
                     </div>
 
                     <div className="mt-8 mb-2 text-center">
@@ -212,7 +232,7 @@ export default function GalleryPage() {
                     </div>
 
                     {isUnlocked && (
-                      <div className="mt-auto pt-2 border-t border-border/50 flex flex-wrap justify-center gap-1">
+                      <div className="mt-auto pt-3 border-t border-border/50 flex flex-wrap justify-center gap-1">
                         <span className="text-[10px] text-muted-foreground px-1.5 py-0.5 rounded-sm bg-background/50">
                           {vocab.category}
                         </span>
@@ -231,6 +251,15 @@ export default function GalleryPage() {
         <DialogContent className="sm:max-w-md">
           {selectedVocab && (() => {
             const rarityInfo = RARITY_MAP[selectedVocab.difficulty];
+            const masteryPoints = vocabMastery[selectedVocab.id] || 0;
+            const masteryLevel = getVocabMasteryLevel(masteryPoints);
+            const masteryBg = masteryLevel.solidBg;
+            
+            const currentTierIndex = MASTERY_TIERS.findIndex(t => t.name === masteryLevel.name);
+            const nextTier = MASTERY_TIERS[currentTierIndex + 1];
+            const maxPoints = nextTier ? nextTier.min : 5000;
+            const progressPercentage = Math.min(100, Math.round((masteryPoints / maxPoints) * 100));
+
             return (
               <>
                 <DialogHeader>
@@ -253,6 +282,26 @@ export default function GalleryPage() {
                     >
                       <Volume2 className="h-4 w-4" />
                     </Button>
+                  </div>
+                  <div 
+                    onClick={() => setShowMasteryRules(true)}
+                    className="mt-4 bg-muted/30 p-3 rounded-lg border border-border/50 cursor-pointer hover:bg-muted/50 transition-colors"
+                  >
+                    <div className="flex justify-between items-center text-sm font-semibold mb-2">
+                      <span className="text-muted-foreground flex items-center gap-1">
+                        Mastery <Info className="h-3 w-3" />
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className={masteryLevel.color}>{masteryLevel.name}</span>
+                        <span className="text-muted-foreground text-xs">({masteryPoints}{nextTier ? `/${maxPoints}` : '+'})</span>
+                      </div>
+                    </div>
+                    <div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
+                      <div 
+                        className={`h-full ${masteryBg} transition-all duration-1000`} 
+                        style={{ width: `${progressPercentage}%` }} 
+                      />
+                    </div>
                   </div>
                   <DialogDescription className="text-base text-foreground font-medium flex items-center gap-2">
                     {selectedVocab.indonesianTranslation} 
@@ -302,6 +351,32 @@ export default function GalleryPage() {
               </>
             );
           })()}
+        </DialogContent>
+      </Dialog>
+      {/* Mastery Rules Dialog */}
+      <Dialog open={showMasteryRules} onOpenChange={setShowMasteryRules}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Mastery Tiers</DialogTitle>
+            <DialogDescription>
+               Keep answering correctly in quizzes to increase your mastery!
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-3 py-4">
+            {MASTERY_TIERS.map((tier) => {
+               return (
+                 <div key={tier.name} className={`flex items-center justify-between p-3 rounded-lg border ${tier.bg} ${tier.color.replace('text-', 'border-')}/30`}>
+                   <div className="flex items-center gap-3">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${tier.solidBg} text-white font-bold`}>
+                         {tier.name[0]}
+                      </div>
+                      <span className={`font-bold ${tier.color}`}>{tier.name}</span>
+                   </div>
+                   <span className="text-sm font-bold text-muted-foreground">{tier.min}+ pts</span>
+                 </div>
+               );
+            })}
+          </div>
         </DialogContent>
       </Dialog>
     </div>

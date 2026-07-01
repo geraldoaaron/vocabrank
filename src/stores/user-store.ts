@@ -85,6 +85,13 @@ export const useUserStore = create<UserState>()(
           state.user.achievements
         );
 
+        const currentMastery = state.user.vocabMastery || {};
+        const newMastery = { ...currentMastery };
+        if (entry.vocabId) {
+          const currentPoints = newMastery[entry.vocabId] || 0;
+          newMastery[entry.vocabId] = Math.min(10000, currentPoints + 100);
+        }
+
         set((s) => ({
           user: {
             ...s.user,
@@ -95,6 +102,7 @@ export const useUserStore = create<UserState>()(
             totalQuestions: newTotal,
             coins: newCoins,
             achievements: [...s.user.achievements, ...newAchievements],
+            vocabMastery: newMastery,
           },
           quizHistory: [
             { ...entry, ratingChange, xpEarned },
@@ -118,12 +126,20 @@ export const useUserStore = create<UserState>()(
         const kFactor = ELO_K_FACTOR[difficulty];
         const ratingChange = -Math.round(kFactor * WRONG_ANSWER_PENALTY);
 
+        const currentMastery = state.user.vocabMastery || {};
+        const newMastery = { ...currentMastery };
+        if (entry.vocabId) {
+          const currentPoints = newMastery[entry.vocabId] || 0;
+          newMastery[entry.vocabId] = Math.max(0, currentPoints - 25);
+        }
+
         set((state) => ({
           user: {
             ...state.user,
             rating: Math.max(0, state.user.rating + ratingChange),
             wrongAnswers: state.user.wrongAnswers + 1,
             totalQuestions: state.user.totalQuestions + 1,
+            vocabMastery: newMastery,
           },
           quizHistory: [
             { ...entry, ratingChange, xpEarned: 0 },

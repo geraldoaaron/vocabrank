@@ -113,7 +113,27 @@ export const DEFAULT_USER = {
   hasClaimedMailboxReward: false,
   hasClaimedBonusReward: false,
   hasClaimedCompensation: false,
+  vocabMastery: {} as Record<string, number>,
 };
+
+// Vocab Mastery Tiers
+export const MASTERY_TIERS = [
+  { name: 'Novice', min: 0, color: 'text-gray-400', bg: 'bg-gray-400/10', solidBg: 'bg-gray-400' },
+  { name: 'Learner', min: 500, color: 'text-gray-500', bg: 'bg-gray-500/10', solidBg: 'bg-gray-500' },
+  { name: 'Explorer', min: 1000, color: 'text-green-500', bg: 'bg-green-500/10', solidBg: 'bg-green-500' },
+  { name: 'Scholar', min: 1500, color: 'text-blue-500', bg: 'bg-blue-500/10', solidBg: 'bg-blue-500' },
+  { name: 'Specialist', min: 2500, color: 'text-purple-500', bg: 'bg-purple-500/10', solidBg: 'bg-purple-500' },
+  { name: 'Master', min: 5000, color: 'text-yellow-500', bg: 'bg-yellow-500/10', solidBg: 'bg-yellow-500' },
+];
+
+export function getVocabMasteryLevel(points: number = 0) {
+  for (let i = MASTERY_TIERS.length - 1; i >= 0; i--) {
+    if (points >= MASTERY_TIERS[i].min) {
+      return MASTERY_TIERS[i];
+    }
+  }
+  return MASTERY_TIERS[0];
+}
 
 // Nav items
 export const NAV_ITEMS = [
